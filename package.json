@@ -1,0 +1,21 @@
+{
+  "name": "shazam",
+  "version": "1.0.0",
+  "description": "node api for Shazam",
+  "main": "dist/index.js",
+  "license": "GPL-2.0",
+  "type": "module",
+  "scripts": {
+    "build": "tsc"
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@ffmpeg-installer/ffmpeg": "^1.1.0",
+    "@types/fluent-ffmpeg": "^2.1.24",
+    "buffer": "^6.0.3",
+    "fluent-ffmpeg": "^2.1.2",
+    "node-fetch": "^3.3.2"
+  }
+}
