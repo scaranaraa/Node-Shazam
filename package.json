@@ -1,5 +1,5 @@
 {
-  "name": "shazam",
+  "name": "node-shazam",
   "version": "1.0.0",
   "description": "node api for Shazam",
   "main": "dist/index.js",

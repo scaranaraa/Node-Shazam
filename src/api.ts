@@ -81,7 +81,15 @@ export class Shazam{
         return Request.headers(language)
     }
 
-    async fromFilePath(path: string, minimal: Boolean = false, language: string = 'en'){
+     /** 
+     * Recognise a song from a file 
+     * @param {string} path the path to the file
+     * @param {Boolean} minimal false for full track data, true for simplified form
+     * @param {string} language song language but it still mostly works even with incorrect language
+     * @returns {ShazamRoot | null} 
+     */
+    
+    async fromFilePath(path: string, minimal: Boolean = false, language: string = 'en'): Promise<ShazamRoot | { title: string; artist: string; album: string | undefined; year: string | undefined; } | null>{
         await convertfile(path)
         const data = fs.readFileSync('output.pcm')
         
@@ -92,13 +100,24 @@ export class Shazam{
 
     }
 
-    async recognizeSong(samples: number[], language: string = 'en', callback?: ((state: "generating" | "transmitting") => void)){
+    /** 
+     * Recognise a song from Samples Array 
+     * @param {number[]} samples Samples array
+     * @param {string} language  song language but it still mostly works even with incorrect language
+     */
+    async recognizeSong(samples: number[], language: string = 'en', callback?: ((state: "generating" | "transmitting") => void)): Promise<ShazamRoot | null>{
         let response = await this.fullRecognizeSong(samples, callback, language);
         if(!response) return null;
 
         return response
 
     }
+
+    /** 
+     * Recognise a song from Samples Array and return minial info
+     * @param {number[]} samples Samples array
+     * @param {string} language  song language but it still mostly works even with incorrect language
+     */
 
     async recognizeSongMinimal(samples: number[], language: string = 'en', callback?: ((state: "generating" | "transmitting") => void)){
         let response = await this.fullRecognizeSong(samples, callback, language);
@@ -138,11 +157,28 @@ export class Shazam{
         return signatureGenerator;
     }
 
+    /** 
+     * Most shazamed tracks globally 
+     * @param {string} language  song language but it still mostly works even with incorrect language
+     * @param {string} endpoint_country Endpoint country (doesnt matter much)
+     * @param {string} limit limit to how many tracks are fetched
+     * @param {string} offset the offset to start fetching from
+     */
+
     async top_tracks_global(language: string = 'en-US',endpoint_country: string = 'GB',limit: string = '10',offset: string = '0'){
 
         const url = ShazamURLS.top_tracks_global(language,endpoint_country,limit,offset)
         return await (await fetch(url, { headers: this.headers(language), method: "GET" })).json();
     }
+
+    /** 
+     * Most shazamed tracks for a country 
+     * @param {string} language  song language but it still mostly works even with incorrect language
+     * @param {string} endpoint_country Endpoint country (doesnt matter much)
+     * @param {string} country_code ISO country code for the country
+     * @param {string} limit limit to how many tracks are fetched
+     * @param {string} offset the offset to start fetching from
+     */
 
     async top_tracks_country(language: string,endpoint_country: string,country_code: string,limit: string,offset: string){
 
@@ -150,63 +186,144 @@ export class Shazam{
         return await (await fetch(url, { headers: this.headers(language), method: "GET" })).json();
     }
 
+     /** 
+     * Most shazamed tracks for a city 
+     * @param {string} language  song language but it still mostly works even with incorrect language
+     * @param {string} endpoint_country Endpoint country (doesnt matter much)
+     * @param {string} city_id Shazam city id
+     * @param {string} limit limit to how many tracks are fetched
+     * @param {string} offset the offset to start fetching from
+     */
     async top_tracks_city(language: string,endpoint_country: string,city_id: string,limit: string,offset: string){
 
         const url = ShazamURLS.top_tracks_city(language,endpoint_country,city_id,limit,offset)
         return await (await fetch(url, { headers: this.headers(language), method: "GET" })).json();
     }
 
+     /** 
+     * Info about a track
+     * @param {string} language  song language but it still mostly works even with incorrect language
+     * @param {string} endpoint_country Endpoint country (doesnt matter much)
+     * @param {string} track_id Shazam track id
+     */
     async track_info(language: string,endpoint_country: string,track_id: string){
 
         const url = ShazamURLS.track_info(language,endpoint_country,track_id)
         return await (await fetch(url, { headers: this.headers(language), method: "GET" })).json();
     }
 
+     /** 
+     * List locations
+     */
     async list_locations(){
         const url = ShazamURLS.locations()
         return await (await fetch(url, { headers: this.headers(), method: "GET" })).json();
     }
 
+     /** 
+     * Most shazamed tracks globally for a genre 
+     * @param {string} language  song language but it still mostly works even with incorrect language
+     * @param {string} endpoint_country Endpoint country (doesnt matter much)
+     * @param {string} genre Genre to search
+     * @param {string} limit limit to how many tracks are fetched
+     * @param {string} offset the offset to start fetching from
+     */
     async top_genre_tracks_world(language: string,endpoint_country: string,genre: string,limit: string,offset: string){
 
         const url = ShazamURLS.genre_world(language,endpoint_country,genre,limit,offset)
         return await (await fetch(url, { headers: this.headers(language), method: "GET" })).json();
     }
 
+     /** 
+     * Most shazamed tracks for a country 
+     * @param {string} language  song language but it still mostly works even with incorrect language
+     * @param {string} endpoint_country Endpoint country (doesnt matter much)
+     * @param {string} country ISO country code for the country
+     * @param {string} genre Genre to search 
+     * @param {string} limit limit to how many tracks are fetched
+     * @param {string} offset the offset to start fetching from
+     */
     async top_genre_tracks_country(language: string, endpoint_country: string, country: string, genre: string, limit: string, offset: string){
 
         const url = ShazamURLS.genre_country(language,endpoint_country,country,genre,limit,offset)
         return await (await fetch(url, { headers: this.headers(language), method: "GET" })).json();
     }
 
+     /** 
+     * Related songs for a track
+     * @param {string} language  song language but it still mostly works even with incorrect language
+     * @param {string} endpoint_country Endpoint country (doesnt matter much)
+     * @param {string} track_id Shazam track id
+     * @param {string} limit limit to how many tracks are fetched
+     * @param {string} offset the offset to start fetching from
+     */
     async related_songs(language: string,endpoint_country: string,track_id: string,offset: string,limit: string){
 
         const url = ShazamURLS.related_songs(language,endpoint_country,track_id,offset,limit)
         return await (await fetch(url, { headers: this.headers(language), method: "GET" })).json();
     }
 
+     /** 
+     * Search artist by name
+     * @param {string} language  song language but it still mostly works even with incorrect language
+     * @param {string} endpoint_country Endpoint country (doesnt matter much)
+     * @param {string} query Artist name
+     * @param {string} limit limit to how many tracks are fetched
+     * @param {string} offset the offset to start fetching from
+     */
     async search_artist(language: string,endpoint_country: string,query: string,limit: string,offset: string){
 
         const url = ShazamURLS.search_artist(language,endpoint_country,query,limit,offset)
         return await (await fetch(url, { headers: this.headers(language), method: "GET" })).json();
     }
 
+     /** 
+     * Search artist by id
+     * @param {string} endpoint_country Endpoint country (doesnt matter much)
+     * @param {string} artist_id Artist ID
+     */
     async search_artist_v2(endpoint_country: string,artist_id: string){
 
         const url = ShazamURLS.search_artist_v2(endpoint_country,artist_id)
         return await (await fetch(url, { headers: this.headers(), method: "GET" })).json();
     }
 
+     /** 
+     * Albums by an artist 
+     * @param {string} endpoint_country Endpoint country (doesnt matter much)
+     * @param {string} artist_id Shazam artist id
+     * @param {string} limit limit to how many tracks are fetched
+     * @param {string} offset the offset to start fetching from
+     */
     async artist_albums(endpoint_country: string,artist_id: string,limit: string,offset: string){
 
         const url = ShazamURLS.artist_albums(endpoint_country,artist_id,limit,offset)
         return await (await fetch(url, { headers: this.headers(), method: "GET" })).json();
     }
 
+     /** 
+     * Search music on shazam
+     * @param {string} language  song language but it still mostly works even with incorrect language
+     * @param {string} endpoint_country Endpoint country (doesnt matter much)
+     * @param {string} query Query to search
+     * @param {string} limit limit to how many tracks are fetched
+     * @param {string} offset the offset to start fetching from
+     */
     async search_music(language: string,endpoint_country: string, query: string,limit: string,offset: string){
 
         const url = ShazamURLS.search_music(language,endpoint_country,query,limit,offset)
         return await (await fetch(url, { headers: this.headers(language), method: "GET" })).json();
+    }
+
+     /** 
+     * Get number of times a track was shazamed
+     * @param {string} track Track ID
+     */
+    
+    async listen_count(track: string){
+
+        const url = ShazamURLS.listening_counter(track)
+        return await (await fetch(url, { headers: this.headers(), method: "GET" })).json();    
     }
 
 }

@@ -46,8 +46,8 @@ export class ShazamURLS{
         return `https://www.shazam.com/services/search/v3/${language}/${endpoint_country}/web/search?query=${query}&numResults=${limit}&offset=${offset}&types=songs`
     }
 
-    static listening_counter(){
-        return `https://www.shazam.com/services/count/v2/web/track/{}`
+    static listening_counter(track: string){
+        return `https://www.shazam.com/services/count/v2/web/track/${track}`
     }
 
     static listening_counter_many(){
