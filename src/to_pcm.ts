@@ -1,8 +1,8 @@
 import pkg from '@ffmpeg-installer/ffmpeg';
 const { path } = pkg;
 import Ffmpeg from "fluent-ffmpeg"
-Ffmpeg.setFfmpegPath(path);
 
+Ffmpeg.setFfmpegPath(path);
 export async function convertfile(path: string) {
     return new Promise((resolve, reject) => {
     Ffmpeg(path)
