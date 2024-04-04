@@ -1,17 +1,21 @@
 {
   "name": "node-shazam",
-  "version": "1.0.0",
+  "version": "1.1.2",
   "description": "node api for Shazam",
   "main": "dist/index.js",
   "license": "GPL-2.0",
   "type": "module",
+  "typings": "src/api.d.ts",
   "scripts": {
-    "build": "tsc"
+    "install": "tsc"
   },
-  "files": [
-    "dist"
-  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/throwaway5665/Node-Shazam.git"
+  },
+  "keywords": ["typescript","shazam","music","nodejs","api"],
   "dependencies": {
+    "typescript": "5.4.3",
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
     "@types/fluent-ffmpeg": "^2.1.24",
     "buffer": "^6.0.3",

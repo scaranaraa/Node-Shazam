@@ -6,7 +6,7 @@ import { s16LEToSamplesArray } from "./utils.js";
 import fs from 'fs'
 import { Device,Request,ShazamURLS } from "./requests.js";
 import { USER_AGENTS } from "./useragents.js";
-import { convertfile } from "./to_pcm.js";
+import { convertfile, tomp3 } from "./to_pcm.js";
 const TIME_ZONE = "Europe/Paris";
 
 function uuidv4() {
@@ -82,7 +82,7 @@ export class Shazam{
     }
 
      /** 
-     * Recognise a song from a file 
+     * Recognise a song from an audio file 
      * @param {string} path the path to the file
      * @param {Boolean} minimal false for full track data, true for simplified form
      * @param {string} language song language but it still mostly works even with incorrect language
@@ -91,14 +91,31 @@ export class Shazam{
     
     async fromFilePath(path: string, minimal: Boolean = false, language: string = 'en'): Promise<ShazamRoot | { title: string; artist: string; album: string | undefined; year: string | undefined; } | null>{
         await convertfile(path)
-        const data = fs.readFileSync('output.pcm')
+        const data = fs.readFileSync('node_shazam_temp.pcm')
         
         const conv = s16LEToSamplesArray(data)
-        fs.unlinkSync('output.pcm')
+        fs.unlinkSync('node_shazam_temp.pcm')
         const recognise = minimal ? await this.recognizeSongMinimal(conv,language) : await this.recognizeSong(conv,language)
         return recognise
 
     }
+
+    /** 
+     * Recognise a song from a video file 
+     * @param {string} path the path to the file
+     * @param {Boolean} minimal false for full track data, true for simplified form
+     * @param {string} language song language but it still mostly works even with incorrect language
+     * @returns {ShazamRoot | null} 
+     */
+    
+    async fromVideoFile(path: string, minimal: Boolean = false, language: string = 'en'): Promise<ShazamRoot | { title: string; artist: string; album: string | undefined; year: string | undefined; } | null>{
+
+        await tomp3(path)
+        const res = await this.fromFilePath('node_shazam_temp.mp3',minimal,language)
+        fs.unlinkSync('node_shazam_temp.mp3')
+        return res
+    }
+
 
     /** 
      * Recognise a song from Samples Array 

@@ -10,7 +10,8 @@ export async function convertfile(path: string) {
     .audioFrequency(16000)
     .outputOptions('-acodec pcm_s16le')
     .audioChannels(1)
-    .output('output.pcm')
+    .duration(10)
+    .output('node_shazam_temp.pcm')
     .on("end", () => {
         try { 
             resolve(undefined);
@@ -22,3 +23,19 @@ export async function convertfile(path: string) {
     .run()
     });
 }
+
+export async function tomp3(path: string) {
+    return new Promise((resolve, reject) => {
+    Ffmpeg(path)
+    .output('node_shazam_temp.mp3')
+    .on("end", () => {
+        try { 
+            resolve(undefined);
+        } catch (error) {
+            reject(error);
+        }
+    })
+    .on("error", reject)
+    .run()
+    });
+} 
