@@ -1,9 +1,11 @@
 import { SignatureGenerator } from "./algorithm.js";
 import { DecodedMessage } from "./signatures.js";
+import { DecodedSignature, recognizeBytes } from "shazamio-core";
 import { default as fetch } from "node-fetch"
 import { ShazamRoot } from "./types/shazam.js";
 import { s16LEToSamplesArray } from "./utils.js";
 import fs from 'fs'
+import { readFileSync } from 'fs';
 import { Device,Request,ShazamURLS } from "./requests.js";
 import { USER_AGENTS } from "./useragents.js";
 import { convertfile, tomp3 } from "./to_pcm.js";
@@ -166,6 +168,36 @@ export class Shazam{
             if(results !== null) return results;
         }
         return null;
+    }
+
+
+     /** 
+     * Recognise a song from a file 
+     * @param {string} path the path to the file
+     * @param {string} language song language but it still mostly works even with incorrect language
+     * @returns {ShazamRoot | null} 
+     */
+    async recognise(path: string, language: string = "en-US"){
+
+        const signature = recognizeBytes(readFileSync(path))
+
+        let data = {
+            'timezone': this.endpoint.timezone,
+            'signature': {
+                'uri': signature[0].uri,
+                'samplems': Math.round(signature[0].number_samples / signature[0].sample_rate_hz * 1000)
+            },
+            'timestamp': new Date().getTime(),
+            'context': {},
+            'geolocation': {}
+        };
+        const url = new URL(this.endpoint.url());
+        Object.entries(this.endpoint.params()).forEach(([a, b]) => url.searchParams.append(a, b));
+
+        let response = await this.endpoint.sendRecognizeRequest(url.toString(), JSON.stringify(data), language);
+        if(response?.matches.length === 0) return null;
+
+        return response
     }
 
     createSignatureGenerator(samples: number[]){

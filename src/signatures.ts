@@ -123,6 +123,7 @@ export function writeRawSignatureHeader(rsh: RawSignatureHeader){
 }
 
 export class DecodedMessage{
+    uri: boolean = false;
     sampleRateHz: number = 0;
     numberSamples: number = 0;
     frequencyBandToSoundPeaks: {[key: string]: FrequencyPeak[]} = {};

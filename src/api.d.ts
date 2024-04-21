@@ -43,7 +43,7 @@ export declare class Shazam {
         "Accept-Language": string;
         "User-Agent": string;
     };
-    /**
+    /*
     * Recognise a song from an audio file
     * @param {string} path the path to the file
     * @param {Boolean} minimal false for full track data, true for simplified form

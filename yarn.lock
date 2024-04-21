@@ -140,6 +140,16 @@ node-fetch@^3.3.2:
     fetch-blob "^3.1.4"
     formdata-polyfill "^4.0.10"
 
+shazamio-core@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/shazamio-core/-/shazamio-core-1.2.1.tgz#5285fee56af250a8f8ee342ad725223d0dd68d91"
+  integrity sha512-J2yU77/c8K5o0DarTB+OtKAsCTuHty/iQTLzgnAGuasDiVCAcRbc+kWXFJnV6Lz4GpF49L8IZ+UAFruL8YrpIA==
+
+typescript@5.4.3:
+  version "5.4.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.4.3.tgz#5c6fedd4c87bee01cd7a528a30145521f8e0feff"
+  integrity sha512-KrPd3PKaCLr78MalgiwJnA25Nm8HAmdwN3mYUYZgG/wizIo9EainNVQI9/yDavtVFRN2h3k8uf3GLHuhDMgEHg==
+
 undici-types@~5.26.4:
   version "5.26.5"
   resolved "https://registry.yarnpkg.com/undici-types/-/undici-types-5.26.5.tgz#bcd539893d00b56e964fd2657a4866b221a65617"

@@ -5,19 +5,15 @@ This is based on [Node-Shazam-API](https://github.com/asivery/node-shazam-api) w
 
 ## Example usage
 
-Recognise track from audio
+Recognise track from file
 ```js
 import {Shazam} from 'node-shazam'
 const shazam = new Shazam()
-//audio is trimmed to 10 seconds
-const recognise = await shazam.fromFilePath('/path/to/file.mp3',false,'en')
-console.log(recognise)
-``` 
 
-Recognise track from video
-```js
-const recognise = await shazam.fromVideoFile('/path/to/file.mp4',false,'en')
+const recognise = await shazam.recognise('/path/to/file','en')
 console.log(recognise)
+
+//fromVideoFile and fromFilePath is deprecated and much slower
 ```
 
 Top tracks globally

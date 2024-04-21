@@ -2,9 +2,9 @@ import { USER_AGENTS } from "./useragents.js"
 
 export class ShazamURLS{
 
-    /*search_from_file(language: string,endpoint_country: string,device: string,uuid_1: string,uuid_2: string){
+        search_from_file(language: string,endpoint_country: string,device: string,uuid_1: string,uuid_2: string){
         return `https://amp.shazam.com/discovery/v5/${language}/${endpoint_country}/${device}/-/tag/${uuid_1}/${uuid_2}?sync=true&webv3=true&sampling=true&connected=&shazamapiversion=v3&sharehub=true&hubv5minorversion=v5.1&hidelb=true&video=v3`
-    }*/
+    }
 
     static top_tracks_global(language: string,endpoint_country: string,limit: string,offset: string){
         return `https://www.shazam.com/shazam/v3/${language}/${endpoint_country}/web/-/tracks/ip-global-chart?pageSize=${limit}&startFrom=${offset}`
