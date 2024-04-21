@@ -3,6 +3,12 @@
 
 This is based on [Node-Shazam-API](https://github.com/asivery/node-shazam-api) with most features added from [ShazamIO](https://github.com/shazamio/ShazamIO)
 
+## Installation
+```
+npm install node-shazam
+yarn add node-shazam
+```
+
 ## Example usage
 
 Recognise track from file
