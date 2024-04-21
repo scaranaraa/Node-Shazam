@@ -16,7 +16,7 @@ Recognise track from file
 import {Shazam} from 'node-shazam'
 const shazam = new Shazam()
 
-const recognise = await shazam.recognise('/path/to/file','en')
+const recognise = await shazam.recognise('/path/to/file','en-US')
 console.log(recognise)
 
 //fromVideoFile and fromFilePath is deprecated and much slower
