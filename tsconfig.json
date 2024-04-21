@@ -7,7 +7,7 @@
     "declaration": false,                            
     "forceConsistentCasingInFileNames": true,            
     "strict": true,                   
-    "inlineSourceMap": true,               
+    "inlineSourceMap": false,               
     "moduleResolution": "Bundler",       
     "skipLibCheck": true ,                               
     "rootDir": "./src",
