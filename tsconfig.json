@@ -4,7 +4,7 @@
     "module": "ES2020",                                
     "outDir": "./dist",
     "esModuleInterop": true,   
-    "declaration": false,                            
+    "declaration": true,                            
     "forceConsistentCasingInFileNames": true,            
     "strict": true,                   
     "inlineSourceMap": false,               

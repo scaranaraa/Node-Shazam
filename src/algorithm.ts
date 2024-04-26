@@ -1,9 +1,9 @@
 import { ComplexNumber, fft } from './fft.js';
-import { DecodedMessage, FrequencyBand, FrequencyPeak } from "./signatures.js";
+import { DecodedMessage, FrequencyBand, FrequencyPeak } from './signatures.js';
 
 const hanning = (m: number) => Array(m)
-        .fill(0)
-        .map((_, n) => 0.5 - 0.5 * Math.cos((2 * Math.PI * n) / (m - 1)));
+    .fill(0)
+    .map((_, n) => 0.5 - 0.5 * Math.cos((2 * Math.PI * n) / (m - 1)));
 
 const pyMod = (a: number, b: number) => (a % b) >= 0 ? (a % b) : b + (a % b);
 
@@ -65,7 +65,7 @@ export class SignatureGenerator{
         }
         this.processInput(this.inputPendingProcessing);
         this.samplesProcessed += this.inputPendingProcessing.length;
-        let returnedSignature = this.nextSignature;
+        const returnedSignature = this.nextSignature;
         this.initFields();
         
         return returnedSignature;
@@ -93,26 +93,26 @@ export class SignatureGenerator{
         this.ringBufferOfSamples.position %= 2048;
         this.ringBufferOfSamples.written += batchOf128S16leMonoSamples.length;
 
-        let excerptFromRingBuffer = ([
+        const excerptFromRingBuffer = ([
             ...this.ringBufferOfSamples.list.slice(this.ringBufferOfSamples.position),
             ...this.ringBufferOfSamples.list.slice(0, this.ringBufferOfSamples.position),
         ] as number[]);
 
         // The premultiplication of the array is for applying a windowing function before the DFT (slighty rounded Hanning without zeros at edges)
 
-        let results = fft(excerptFromRingBuffer.map((v, i) => (new ComplexNumber(v * HANNING_MATRIX[i], 0))))
+        const results = fft(excerptFromRingBuffer.map((v, i) => (new ComplexNumber(v * HANNING_MATRIX[i], 0))))
             .map((e: ComplexNumber) => (e.imag * e.imag + e.real * e.real) / (1 << 17))
             .map((e: number) => e < 0.0000000001 ? 0.0000000001 : e).slice(0, 1025);
         
         if(results.length != 1025){
-            console.log("ASSERT FAILED!");
+            console.log('ASSERT FAILED!');
         }
 
         this.fftOutputs.append(new Float64Array(results));
     }
 
     doPeakSpreading(){
-        let originLastFFT = this.fftOutputs.list[pyMod(this.fftOutputs.position - 1, this.fftOutputs.bufferSize)]!,
+        const originLastFFT = this.fftOutputs.list[pyMod(this.fftOutputs.position - 1, this.fftOutputs.bufferSize)]!,
             spreadLastFFT = new Float64Array(originLastFFT);
         for(let position = 0; position < 1025; position++){
             if(position < 1023){
@@ -120,8 +120,8 @@ export class SignatureGenerator{
             }
 
             let maxValue = spreadLastFFT[position];
-            for(let formerFftNum of [-1, -3, -6]){
-                let formerFftOutput = this.spreadFFTsOutput.list[pyMod(this.spreadFFTsOutput.position + formerFftNum, this.spreadFFTsOutput.bufferSize)]!;
+            for(const formerFftNum of [-1, -3, -6]){
+                const formerFftOutput = this.spreadFFTsOutput.list[pyMod(this.spreadFFTsOutput.position + formerFftNum, this.spreadFFTsOutput.bufferSize)]!;
                 if(isNaN(formerFftOutput[position])) continue;
                 formerFftOutput[position] = maxValue = Math.max(formerFftOutput[position], maxValue);
             }
@@ -130,27 +130,27 @@ export class SignatureGenerator{
     }
 
     doPeakRecognition(){
-        let fftMinus46 = this.fftOutputs.list[pyMod(this.fftOutputs.position - 46, this.fftOutputs.bufferSize)]!;
-        let fftMinus49 = this.spreadFFTsOutput.list[pyMod(this.spreadFFTsOutput.position - 49, this.spreadFFTsOutput.bufferSize)]!;
+        const fftMinus46 = this.fftOutputs.list[pyMod(this.fftOutputs.position - 46, this.fftOutputs.bufferSize)]!;
+        const fftMinus49 = this.spreadFFTsOutput.list[pyMod(this.spreadFFTsOutput.position - 49, this.spreadFFTsOutput.bufferSize)]!;
 
         const range = (a: number, b: number, c: number = 1) => {
-            let out = [];
+            const out = [];
             for(let i = a; i < b; i += c) out.push(i);
             return out;
-        }
+        };
 
         for(let binPosition = 10; binPosition < 1015; binPosition++){
             // Ensire that the bin is large enough to be a peak
             if((fftMinus46[binPosition] >= 1/64) && (fftMinus46[binPosition] >= fftMinus49[binPosition - 1])){
                 let maxNeighborInFftMinus49 = 0;
-                for(let neighborOffset of [...range(-10, -3, 3), -3, 1, ...range(2, 9, 3)]){
+                for(const neighborOffset of [...range(-10, -3, 3), -3, 1, ...range(2, 9, 3)]){
                     const candidate = fftMinus49[binPosition + neighborOffset];
                     if(isNaN(candidate)) continue;
                     maxNeighborInFftMinus49 = Math.max(candidate, maxNeighborInFftMinus49);
                 }
                 if(fftMinus46[binPosition] > maxNeighborInFftMinus49){
                     let maxNeighborInOtherAdjacentFFTs = maxNeighborInFftMinus49;
-                    for(let otherOffset of [-53, -45, ...range(165, 201, 7), ...range(214, 250, 7)]){
+                    for(const otherOffset of [-53, -45, ...range(165, 201, 7), ...range(214, 250, 7)]){
                         const candidate = this.spreadFFTsOutput.list[pyMod(this.spreadFFTsOutput.position + otherOffset, this.spreadFFTsOutput.bufferSize)]![binPosition - 1];
                         if(isNaN(candidate)) continue;
                         maxNeighborInOtherAdjacentFFTs = Math.max(
@@ -162,21 +162,21 @@ export class SignatureGenerator{
                     if(fftMinus46[binPosition] > maxNeighborInOtherAdjacentFFTs){
                         // This is a peak. Store the peak
 
-                        let fftNumber = this.spreadFFTsOutput.written - 46;
+                        const fftNumber = this.spreadFFTsOutput.written - 46;
 
-                        let peakMagnitude = Math.log(Math.max(1 / 64, fftMinus46[binPosition])) * 1477.3 + 6144,
+                        const peakMagnitude = Math.log(Math.max(1 / 64, fftMinus46[binPosition])) * 1477.3 + 6144,
                             peakMagnitudeBefore = Math.log(Math.max(1 / 64, fftMinus46[binPosition-1])) * 1477.3 + 6144,
                             peakMagnitudeAfter = Math.log(Math.max(1 / 64, fftMinus46[binPosition+1])) * 1477.3 + 6144;
                         
-                        let peakVariation1 = peakMagnitude * 2 - peakMagnitudeBefore - peakMagnitudeAfter,
+                        const peakVariation1 = peakMagnitude * 2 - peakMagnitudeBefore - peakMagnitudeAfter,
                             peakVariation2 = (peakMagnitudeAfter - peakMagnitudeBefore) * 32 / peakVariation1;
                         
-                        let correctedPeakFrequencyBin = binPosition * 64 + peakVariation2;
+                        const correctedPeakFrequencyBin = binPosition * 64 + peakVariation2;
                         if(peakVariation1 <= 0){
-                            console.log("Assert 2 failed - " + peakVariation1);
+                            console.log('Assert 2 failed - ' + peakVariation1);
                         }
 
-                        let frequencyHz = correctedPeakFrequencyBin * (16000 / 2 / 1024 / 64);
+                        const frequencyHz = correctedPeakFrequencyBin * (16000 / 2 / 1024 / 64);
                         let band;
                         if(frequencyHz < 250){
                             continue;

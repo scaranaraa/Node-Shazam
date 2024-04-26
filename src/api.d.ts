@@ -1,6 +1,6 @@
-import { SignatureGenerator } from "./algorithm.js";
-import { DecodedMessage } from "./signatures.js";
-import { ShazamRoot } from "./types/shazam.js";
+import { SignatureGenerator } from './algorithm.js';
+import { DecodedMessage } from './signatures.js';
+import { ShazamRoot } from './types/shazam.js';
 export declare class Endpoint {
     timezone: string;
     static SCHEME: string;
@@ -19,13 +19,13 @@ export declare class Endpoint {
         video: string;
     };
     headers(language?: string): {
-        "X-Shazam-Platform": string;
-        "X-Shazam-AppVersion": string;
+        'X-Shazam-Platform': string;
+        'X-Shazam-AppVersion': string;
         Accept: string;
-        "Content-Type": string;
-        "Accept-Encoding": string;
-        "Accept-Language": string;
-        "User-Agent": string;
+        'Content-Type': string;
+        'Accept-Encoding': string;
+        'Accept-Language': string;
+        'User-Agent': string;
     };
     sendRecognizeRequest(url: string, body: string, language?: string): Promise<ShazamRoot | null>;
     formatAndSendRecognizeRequest(signature: DecodedMessage, language?: string): Promise<ShazamRoot | null>;
@@ -35,13 +35,13 @@ export declare class Shazam {
     endpoint: Endpoint;
     constructor(timeZone?: string);
     headers(language?: string): {
-        "X-Shazam-Platform": string;
-        "X-Shazam-AppVersion": string;
+        'X-Shazam-Platform': string;
+        'X-Shazam-AppVersion': string;
         Accept: string;
-        "Content-Type": string;
-        "Accept-Encoding": string;
-        "Accept-Language": string;
-        "User-Agent": string;
+        'Content-Type': string;
+        'Accept-Encoding': string;
+        'Accept-Language': string;
+        'User-Agent': string;
     };
     /*
     * Recognise a song from an audio file
@@ -50,7 +50,7 @@ export declare class Shazam {
     * @param {string} language song language but it still mostly works even with incorrect language
     * @returns {ShazamRoot | null}
     */
-    fromFilePath(path: string, minimal?: Boolean, language?: string): Promise<ShazamRoot | {
+    fromFilePath(path: string, minimal?: boolean, language?: string): Promise<ShazamRoot | {
         title: string;
         artist: string;
         album: string | undefined;
@@ -63,7 +63,7 @@ export declare class Shazam {
      * @param {string} language song language but it still mostly works even with incorrect language
      * @returns {ShazamRoot | null}
      */
-    fromVideoFile(path: string, minimal?: Boolean, language?: string): Promise<ShazamRoot | {
+    fromVideoFile(path: string, minimal?: boolean, language?: string): Promise<ShazamRoot | {
         title: string;
         artist: string;
         album: string | undefined;
@@ -74,19 +74,19 @@ export declare class Shazam {
      * @param {number[]} samples Samples array
      * @param {string} language  song language but it still mostly works even with incorrect language
      */
-    recognizeSong(samples: number[], language?: string, callback?: ((state: "generating" | "transmitting") => void)): Promise<ShazamRoot | null>;
+    recognizeSong(samples: number[], language?: string, callback?: ((state: 'generating' | 'transmitting') => void)): Promise<ShazamRoot | null>;
     /**
      * Recognise a song from Samples Array and return minial info
      * @param {number[]} samples Samples array
      * @param {string} language  song language but it still mostly works even with incorrect language
      */
-    recognizeSongMinimal(samples: number[], language?: string, callback?: ((state: "generating" | "transmitting") => void)): Promise<{
+    recognizeSongMinimal(samples: number[], language?: string, callback?: ((state: 'generating' | 'transmitting') => void)): Promise<{
         title: string;
         artist: string;
         album: string | undefined;
         year: string | undefined;
     } | null>;
-    fullRecognizeSong(samples: number[], callback?: ((state: "generating" | "transmitting") => void), language?: string): Promise<ShazamRoot | null>;
+    fullRecognizeSong(samples: number[], callback?: ((state: 'generating' | 'transmitting') => void), language?: string): Promise<ShazamRoot | null>;
     createSignatureGenerator(samples: number[]): SignatureGenerator;
     /**
      * Most shazamed tracks globally

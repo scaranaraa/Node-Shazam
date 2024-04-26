@@ -152,8 +152,8 @@ export interface ShazamGenres {
 }
 
 export interface ShazamUrlparams {
-    "{tracktitle}": string
-    "{trackartist}": string
+    '{tracktitle}': string
+    '{trackartist}': string
 }
 
 export interface ShazamHighlightsurls {

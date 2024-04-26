@@ -1,6 +1,6 @@
 {
   "name": "node-shazam",
-  "version": "1.2.0",
+  "version": "1.2.2",
   "description": "node api for Shazam",
   "main": "dist/index.js",
   "license": "GPL-2.0",
@@ -8,7 +8,7 @@
   "typings": "dist/api.d.ts",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/throwaway5665/Node-Shazam.git"
+    "url": "git+https://github.com/scaranaraa/Node-Shazam.git"
   },
   "keywords": [
     "typescript",
@@ -23,7 +23,15 @@
     "buffer": "^6.0.3",
     "fluent-ffmpeg": "^2.1.2",
     "node-fetch": "^3.3.2",
-    "shazamio-core": "^1.2.1",
-    "typescript": "5.4.3"
-  }
+    "shazamio-core": "^1.3.1",
+    "typescript": "5.4.5"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^7.7.1",
+    "@typescript-eslint/parser": "^7.7.1",
+    "eslint": "^9.1.1",
+    "eslint-plugin-mocha": "^10.4.3",
+    "mocha": "^10.4.0"
+  },
+  "packageManager": "yarn@4.1.1"
 }
