@@ -69,7 +69,9 @@ export class Endpoint{
         return response as ShazamRoot;
     }
 }
-
+/**
+ * @class Shazam
+ */
 export class Shazam{
     static MAX_TIME_SCEONDS = 8;
 
@@ -87,7 +89,7 @@ export class Shazam{
      * Recognise a song from an audio file 
      * @param {string} path the path to the file
      * @param {Boolean} minimal false for full track data, true for simplified form
-     * @param {string} language song language but it still mostly works even with incorrect language
+     * @param {string} language Song language
      * @returns {ShazamRoot | null} 
      */
     
@@ -107,7 +109,7 @@ export class Shazam{
      * Recognise a song from a video file 
      * @param {string} path the path to the file
      * @param {Boolean} minimal false for full track data, true for simplified form
-     * @param {string} language song language but it still mostly works even with incorrect language
+     * @param {string} language Song language
      * @returns {ShazamRoot | null} 
      */
     
@@ -124,7 +126,7 @@ export class Shazam{
      * @deprecated
      * Recognise a song from Samples Array 
      * @param {number[]} samples Samples array
-     * @param {string} language  song language but it still mostly works even with incorrect language
+     * @param {string} language  Song language
      */
     async recognizeSong(samples: number[], language: string = 'en', callback?: ((state: 'generating' | 'transmitting') => void)): Promise<ShazamRoot | null>{
         const response = await this.fullRecognizeSong(samples, callback, language);
@@ -138,7 +140,7 @@ export class Shazam{
      * @deprecated
      * Recognise a song from Samples Array and return minial info
      * @param {number[]} samples Samples array
-     * @param {string} language  song language but it still mostly works even with incorrect language
+     * @param {string} language  Song language
      */
 
     async recognizeSongMinimal(samples: number[], language: string = 'en', callback?: ((state: 'generating' | 'transmitting') => void)){
@@ -176,7 +178,7 @@ export class Shazam{
     /** 
      * Recognise a song from a file 
      * @param {string} path the path to the file
-     * @param {string} language song language but it still mostly works even with incorrect language
+     * @param {string} language Song language
      * @param {boolean} minimal return minimal info
      * @returns {ShazamRoot | null} 
      */
@@ -231,8 +233,8 @@ export class Shazam{
 
     /** 
      * Most shazamed tracks globally 
-     * @param {string} language  song language but it still mostly works even with incorrect language
-     * @param {string} endpoint_country Endpoint country (doesnt matter much)
+     * @param {string} language  Song language
+     * @param {string} endpoint_country Endpoint country  
      * @param {string} limit limit to how many tracks are fetched
      * @param {string} offset the offset to start fetching from
      */
@@ -245,8 +247,8 @@ export class Shazam{
 
     /** 
      * Most shazamed tracks for a country 
-     * @param {string} language  song language but it still mostly works even with incorrect language
-     * @param {string} endpoint_country Endpoint country (doesnt matter much)
+     * @param {string} language  Song language
+     * @param {string} endpoint_country Endpoint country  
      * @param {string} country_code ISO country code for the country
      * @param {string} limit limit to how many tracks are fetched
      * @param {string} offset the offset to start fetching from
@@ -260,8 +262,8 @@ export class Shazam{
 
     /** 
      * Most shazamed tracks for a city 
-     * @param {string} language  song language but it still mostly works even with incorrect language
-     * @param {string} endpoint_country Endpoint country (doesnt matter much)
+     * @param {string} language  Song language
+     * @param {string} endpoint_country Endpoint country  
      * @param {string} city_id Shazam city id
      * @param {string} limit limit to how many tracks are fetched
      * @param {string} offset the offset to start fetching from
@@ -274,8 +276,8 @@ export class Shazam{
 
     /** 
      * Info about a track
-     * @param {string} language  song language but it still mostly works even with incorrect language
-     * @param {string} endpoint_country Endpoint country (doesnt matter much)
+     * @param {string} language  Song language
+     * @param {string} endpoint_country Endpoint country  
      * @param {string} track_id Shazam track id
      */
     async track_info(language: string,endpoint_country: string,track_id: string){
@@ -294,8 +296,8 @@ export class Shazam{
 
     /** 
      * Most shazamed tracks globally for a genre 
-     * @param {string} language  song language but it still mostly works even with incorrect language
-     * @param {string} endpoint_country Endpoint country (doesnt matter much)
+     * @param {string} language  Song language
+     * @param {string} endpoint_country Endpoint country  
      * @param {string} genre Genre to search
      * @param {string} limit limit to how many tracks are fetched
      * @param {string} offset the offset to start fetching from
@@ -308,8 +310,8 @@ export class Shazam{
 
     /** 
      * Most shazamed tracks for a country 
-     * @param {string} language  song language but it still mostly works even with incorrect language
-     * @param {string} endpoint_country Endpoint country (doesnt matter much)
+     * @param {string} language  Song language
+     * @param {string} endpoint_country Endpoint country  
      * @param {string} country ISO country code for the country
      * @param {string} genre Genre to search 
      * @param {string} limit limit to how many tracks are fetched
@@ -323,8 +325,8 @@ export class Shazam{
 
     /** 
      * Related songs for a track
-     * @param {string} language  song language but it still mostly works even with incorrect language
-     * @param {string} endpoint_country Endpoint country (doesnt matter much)
+     * @param {string} language  Song language
+     * @param {string} endpoint_country Endpoint country  
      * @param {string} track_id Shazam track id
      * @param {string} limit limit to how many tracks are fetched
      * @param {string} offset the offset to start fetching from
@@ -337,8 +339,8 @@ export class Shazam{
 
     /** 
      * Search artist by name
-     * @param {string} language  song language but it still mostly works even with incorrect language
-     * @param {string} endpoint_country Endpoint country (doesnt matter much)
+     * @param {string} language  Song language
+     * @param {string} endpoint_country Endpoint country  
      * @param {string} query Artist name
      * @param {string} limit limit to how many tracks are fetched
      * @param {string} offset the offset to start fetching from
@@ -351,7 +353,7 @@ export class Shazam{
 
     /** 
      * Search artist by id
-     * @param {string} endpoint_country Endpoint country (doesnt matter much)
+     * @param {string} endpoint_country Endpoint country  
      * @param {string} artist_id Artist ID
      */
     async search_artist_v2(endpoint_country: string,artist_id: string){
@@ -362,7 +364,7 @@ export class Shazam{
 
     /** 
      * Albums by an artist 
-     * @param {string} endpoint_country Endpoint country (doesnt matter much)
+     * @param {string} endpoint_country Endpoint country  
      * @param {string} artist_id Shazam artist id
      * @param {string} limit limit to how many tracks are fetched
      * @param {string} offset the offset to start fetching from
@@ -375,8 +377,8 @@ export class Shazam{
 
     /** 
      * Search music on shazam
-     * @param {string} language  song language but it still mostly works even with incorrect language
-     * @param {string} endpoint_country Endpoint country (doesnt matter much)
+     * @param {string} language  Song language
+     * @param {string} endpoint_country Endpoint country  
      * @param {string} query Query to search
      * @param {string} limit limit to how many tracks are fetched
      * @param {string} offset the offset to start fetching from

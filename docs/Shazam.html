@@ -1,0 +1,1391 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta name="generator" content="JSDoc 4.0.2">
+  <meta charset="utf-8">
+  <title>node-shazam 1.2.3 &raquo; Class: Shazam</title>
+  <link rel="stylesheet" href="https://brick.a.ssl.fastly.net/Karla:400,400i,700,700i" type="text/css">
+  <link rel="stylesheet" href="https://brick.a.ssl.fastly.net/Noto+Serif:400,400i,700,700i" type="text/css">
+  <link rel="stylesheet" href="https://brick.a.ssl.fastly.net/Inconsolata:500" type="text/css">
+  <link href="css/baseline.css" rel="stylesheet">
+</head>
+
+<body onload="prettyPrint()">
+  <nav id="jsdoc-navbar" role="navigation" class="jsdoc-navbar">
+    <div id="jsdoc-navbar-container">
+      <div id="jsdoc-navbar-content">
+        <a href="index.html" class="jsdoc-navbar-package-name">node-shazam 1.<wbr>2.<wbr>3</a>
+      </div>
+    </div>
+  </nav>
+  <div id="jsdoc-body-container">
+    <div id="jsdoc-content">
+      <div id="jsdoc-content-container">
+        <div id="jsdoc-main" role="main">
+          <header class="page-header">
+            <div class="symbol-detail-labels"><span class="label label-kind">class</span></div>
+            <h1><small></small><span class="symbol-name">Shazam</span></h1>
+            <p class="source-link">Source: <a href="api.js.html#source-line-64">api.<wbr>js:64</a></p>
+            <dl class="dl-compact">
+            </dl>
+          </header>
+          <section id="summary">
+            <div class="summary-callout">
+              <h2 class="summary-callout-heading">Methods</h2>
+              <div class="summary-content">
+                <div class="summary-column">
+                  <dl class="dl-summary-callout">
+                    <dt><a href="Shazam.html#artist_albums">artist_albums(endpoint_country, artist_id, limit, offset)</a></dt>
+                    <dd>
+                    </dd>
+                    <dt><a href="Shazam.html#fromFilePath">fromFilePath(path, minimal, language)</a></dt>
+                    <dd>
+                    </dd>
+                    <dt><a href="Shazam.html#fromVideoFile">fromVideoFile(path, minimal, language)</a></dt>
+                    <dd>
+                    </dd>
+                    <dt><a href="Shazam.html#list_locations">list_locations()</a></dt>
+                    <dd>
+                    </dd>
+                    <dt><a href="Shazam.html#listen_count">listen_count(track)</a></dt>
+                    <dd>
+                    </dd>
+                    <dt><a href="Shazam.html#recognise">recognise(path, language, minimal)</a></dt>
+                    <dd>
+                    </dd>
+                  </dl>
+                </div>
+                <div class="summary-column">
+                  <dl class="dl-summary-callout">
+                    <dt><a href="Shazam.html#recognizeSong">recognizeSong(samples, language)</a></dt>
+                    <dd>
+                    </dd>
+                    <dt><a href="Shazam.html#recognizeSongMinimal">recognizeSongMinimal(samples, language)</a></dt>
+                    <dd>
+                    </dd>
+                    <dt><a href="Shazam.html#related_songs">related_songs(language, endpoint_country, track_id, limit, offset)</a></dt>
+                    <dd>
+                    </dd>
+                    <dt><a href="Shazam.html#search_artist">search_artist(language, endpoint_country, query, limit, offset)</a></dt>
+                    <dd>
+                    </dd>
+                    <dt><a href="Shazam.html#search_artist_v2">search_artist_v2(endpoint_country, artist_id)</a></dt>
+                    <dd>
+                    </dd>
+                    <dt><a href="Shazam.html#search_music">search_music(language, endpoint_country, query, limit, offset)</a></dt>
+                    <dd>
+                    </dd>
+                  </dl>
+                </div>
+                <div class="summary-column">
+                  <dl class="dl-summary-callout">
+                    <dt><a href="Shazam.html#top_genre_tracks_country">top_genre_tracks_country(language, endpoint_country, country, genre, limit, offset)</a></dt>
+                    <dd>
+                    </dd>
+                    <dt><a href="Shazam.html#top_genre_tracks_world">top_genre_tracks_world(language, endpoint_country, genre, limit, offset)</a></dt>
+                    <dd>
+                    </dd>
+                    <dt><a href="Shazam.html#top_tracks_city">top_tracks_city(language, endpoint_country, city_id, limit, offset)</a></dt>
+                    <dd>
+                    </dd>
+                    <dt><a href="Shazam.html#top_tracks_country">top_tracks_country(language, endpoint_country, country_code, limit, offset)</a></dt>
+                    <dd>
+                    </dd>
+                    <dt><a href="Shazam.html#top_tracks_global">top_tracks_global(language, endpoint_country, limit, offset)</a></dt>
+                    <dd>
+                    </dd>
+                    <dt><a href="Shazam.html#track_info">track_info(language, endpoint_country, track_id)</a></dt>
+                    <dd>
+                    </dd>
+                  </dl>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section>
+            <h2 id="Shazam">new&nbsp;<span class="symbol-name">Shazam</span><span class="signature"><span class="signature-params">()</span></span></h2>
+            <dl class="dl-compact">
+            </dl>
+          </section>
+          <section>
+            <h2>Methods</h2>
+            <section>
+              <div class="symbol-detail-labels"><span class="label label-async">async</span></div>
+              <h3 id="artist_albums"><span class="symbol-name">artist_albums</span><span class="signature"><span class="signature-params">(endpoint_country, artist_id, limit, offset)</span></span></h3>
+              <p>Albums by an artist</p>
+              <section>
+                <h4>Parameters</h4>
+                <table class="jsdoc-details-table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Type</th>
+                      <th>Optional</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <p>endpoint_country</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>Endpoint country</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>artist_id</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>Shazam artist id</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>limit</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>limit to how many tracks are fetched</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>offset</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>the offset to start fetching from</p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </section>
+              <dl class="dl-compact">
+              </dl>
+              <div class="symbol-detail-labels"><span class="label label-async">async</span></div>
+              <h3 id="fromFilePath"><span class="symbol-name">fromFilePath</span><span class="signature"><span class="signature-params">(path, minimal, language)</span>&nbsp;&rarr; <span class="signature-returns"> (ShazamRoot or null)</span></span></h3>
+              <section>
+                <h4>Parameters</h4>
+                <table class="jsdoc-details-table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Type</th>
+                      <th>Optional</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <p>path</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>the path to the file</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>minimal</p>
+                      </td>
+                      <td>
+                        <p>Boolean</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>false for full track data, true for simplified form</p>
+                        <p>Defaults to <code>false</code>.</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>language</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>Song language</p>
+                        <p>Defaults to <code>en</code>.</p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </section>
+              <dl class="dl-compact">
+                <dt>Deprecated</dt>
+                <dd>Recognise a song from an audio file</dd>
+                <dt>Returns</dt>
+                <dd>
+                  <p><code>(ShazamRoot or null)</code> </p>
+                </dd>
+              </dl>
+              <div class="symbol-detail-labels"><span class="label label-async">async</span></div>
+              <h3 id="fromVideoFile"><span class="symbol-name">fromVideoFile</span><span class="signature"><span class="signature-params">(path, minimal, language)</span>&nbsp;&rarr; <span class="signature-returns"> (ShazamRoot or null)</span></span></h3>
+              <section>
+                <h4>Parameters</h4>
+                <table class="jsdoc-details-table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Type</th>
+                      <th>Optional</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <p>path</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>the path to the file</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>minimal</p>
+                      </td>
+                      <td>
+                        <p>Boolean</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>false for full track data, true for simplified form</p>
+                        <p>Defaults to <code>false</code>.</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>language</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>Song language</p>
+                        <p>Defaults to <code>en</code>.</p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </section>
+              <dl class="dl-compact">
+                <dt>Deprecated</dt>
+                <dd>Recognise a song from a video file</dd>
+                <dt>Returns</dt>
+                <dd>
+                  <p><code>(ShazamRoot or null)</code> </p>
+                </dd>
+              </dl>
+              <div class="symbol-detail-labels"><span class="label label-async">async</span></div>
+              <h3 id="list_locations"><span class="symbol-name">list_locations</span><span class="signature"><span class="signature-params">()</span></span></h3>
+              <p>List locations</p>
+              <dl class="dl-compact">
+              </dl>
+              <div class="symbol-detail-labels"><span class="label label-async">async</span></div>
+              <h3 id="listen_count"><span class="symbol-name">listen_count</span><span class="signature"><span class="signature-params">(track)</span></span></h3>
+              <p>Get number of times a track was shazamed</p>
+              <section>
+                <h4>Parameter</h4>
+                <table class="jsdoc-details-table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Type</th>
+                      <th>Optional</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <p>track</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>Track ID</p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </section>
+              <dl class="dl-compact">
+              </dl>
+              <div class="symbol-detail-labels"><span class="label label-async">async</span></div>
+              <h3 id="recognise"><span class="symbol-name">recognise</span><span class="signature"><span class="signature-params">(path, language, minimal)</span>&nbsp;&rarr; <span class="signature-returns"> (ShazamRoot or null)</span></span></h3>
+              <p>Recognise a song from a file</p>
+              <section>
+                <h4>Parameters</h4>
+                <table class="jsdoc-details-table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Type</th>
+                      <th>Optional</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <p>path</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>the path to the file</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>language</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>Song language</p>
+                        <p>Defaults to <code>en-US</code>.</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>minimal</p>
+                      </td>
+                      <td>
+                        <p>boolean</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>return minimal info</p>
+                        <p>Defaults to <code>false</code>.</p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </section>
+              <dl class="dl-compact">
+                <dt>Returns</dt>
+                <dd>
+                  <p><code>(ShazamRoot or null)</code> </p>
+                </dd>
+              </dl>
+              <div class="symbol-detail-labels"><span class="label label-async">async</span></div>
+              <h3 id="recognizeSong"><span class="symbol-name">recognizeSong</span><span class="signature"><span class="signature-params">(samples, language)</span></span></h3>
+              <section>
+                <h4>Parameters</h4>
+                <table class="jsdoc-details-table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Type</th>
+                      <th>Optional</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <p>samples</p>
+                      </td>
+                      <td>
+                        <p>Array of number</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>Samples array</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>language</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>Song language</p>
+                        <p>Defaults to <code>en</code>.</p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </section>
+              <dl class="dl-compact">
+                <dt>Deprecated</dt>
+                <dd>Recognise a song from Samples Array</dd>
+              </dl>
+              <div class="symbol-detail-labels"><span class="label label-async">async</span></div>
+              <h3 id="recognizeSongMinimal"><span class="symbol-name">recognizeSongMinimal</span><span class="signature"><span class="signature-params">(samples, language)</span></span></h3>
+              <section>
+                <h4>Parameters</h4>
+                <table class="jsdoc-details-table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Type</th>
+                      <th>Optional</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <p>samples</p>
+                      </td>
+                      <td>
+                        <p>Array of number</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>Samples array</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>language</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>Song language</p>
+                        <p>Defaults to <code>en</code>.</p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </section>
+              <dl class="dl-compact">
+                <dt>Deprecated</dt>
+                <dd>Recognise a song from Samples Array and return minial info</dd>
+              </dl>
+              <div class="symbol-detail-labels"><span class="label label-async">async</span></div>
+              <h3 id="related_songs"><span class="symbol-name">related_songs</span><span class="signature"><span class="signature-params">(language, endpoint_country, track_id, limit, offset)</span></span></h3>
+              <p>Related songs for a track</p>
+              <section>
+                <h4>Parameters</h4>
+                <table class="jsdoc-details-table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Type</th>
+                      <th>Optional</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <p>language</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>Song language</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>endpoint_country</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>Endpoint country</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>track_id</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>Shazam track id</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>limit</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>limit to how many tracks are fetched</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>offset</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>the offset to start fetching from</p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </section>
+              <dl class="dl-compact">
+              </dl>
+              <div class="symbol-detail-labels"><span class="label label-async">async</span></div>
+              <h3 id="search_artist"><span class="symbol-name">search_artist</span><span class="signature"><span class="signature-params">(language, endpoint_country, query, limit, offset)</span></span></h3>
+              <p>Search artist by name</p>
+              <section>
+                <h4>Parameters</h4>
+                <table class="jsdoc-details-table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Type</th>
+                      <th>Optional</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <p>language</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>Song language</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>endpoint_country</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>Endpoint country</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>query</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>Artist name</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>limit</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>limit to how many tracks are fetched</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>offset</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>the offset to start fetching from</p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </section>
+              <dl class="dl-compact">
+              </dl>
+              <div class="symbol-detail-labels"><span class="label label-async">async</span></div>
+              <h3 id="search_artist_v2"><span class="symbol-name">search_artist_v2</span><span class="signature"><span class="signature-params">(endpoint_country, artist_id)</span></span></h3>
+              <p>Search artist by id</p>
+              <section>
+                <h4>Parameters</h4>
+                <table class="jsdoc-details-table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Type</th>
+                      <th>Optional</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <p>endpoint_country</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>Endpoint country</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>artist_id</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>Artist ID</p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </section>
+              <dl class="dl-compact">
+              </dl>
+              <div class="symbol-detail-labels"><span class="label label-async">async</span></div>
+              <h3 id="search_music"><span class="symbol-name">search_music</span><span class="signature"><span class="signature-params">(language, endpoint_country, query, limit, offset)</span></span></h3>
+              <p>Search music on shazam</p>
+              <section>
+                <h4>Parameters</h4>
+                <table class="jsdoc-details-table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Type</th>
+                      <th>Optional</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <p>language</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>Song language</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>endpoint_country</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>Endpoint country</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>query</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>Query to search</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>limit</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>limit to how many tracks are fetched</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>offset</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>the offset to start fetching from</p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </section>
+              <dl class="dl-compact">
+              </dl>
+              <div class="symbol-detail-labels"><span class="label label-async">async</span></div>
+              <h3 id="top_genre_tracks_country"><span class="symbol-name">top_genre_tracks_country</span><span class="signature"><span class="signature-params">(language, endpoint_country, country, genre, limit, offset)</span></span></h3>
+              <p>Most shazamed tracks for a country</p>
+              <section>
+                <h4>Parameters</h4>
+                <table class="jsdoc-details-table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Type</th>
+                      <th>Optional</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <p>language</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>Song language</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>endpoint_country</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>Endpoint country</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>country</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>ISO country code for the country</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>genre</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>Genre to search</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>limit</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>limit to how many tracks are fetched</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>offset</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>the offset to start fetching from</p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </section>
+              <dl class="dl-compact">
+              </dl>
+              <div class="symbol-detail-labels"><span class="label label-async">async</span></div>
+              <h3 id="top_genre_tracks_world"><span class="symbol-name">top_genre_tracks_world</span><span class="signature"><span class="signature-params">(language, endpoint_country, genre, limit, offset)</span></span></h3>
+              <p>Most shazamed tracks globally for a genre</p>
+              <section>
+                <h4>Parameters</h4>
+                <table class="jsdoc-details-table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Type</th>
+                      <th>Optional</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <p>language</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>Song language</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>endpoint_country</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>Endpoint country</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>genre</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>Genre to search</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>limit</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>limit to how many tracks are fetched</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>offset</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>the offset to start fetching from</p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </section>
+              <dl class="dl-compact">
+              </dl>
+              <div class="symbol-detail-labels"><span class="label label-async">async</span></div>
+              <h3 id="top_tracks_city"><span class="symbol-name">top_tracks_city</span><span class="signature"><span class="signature-params">(language, endpoint_country, city_id, limit, offset)</span></span></h3>
+              <p>Most shazamed tracks for a city</p>
+              <section>
+                <h4>Parameters</h4>
+                <table class="jsdoc-details-table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Type</th>
+                      <th>Optional</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <p>language</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>Song language</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>endpoint_country</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>Endpoint country</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>city_id</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>Shazam city id</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>limit</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>limit to how many tracks are fetched</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>offset</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>the offset to start fetching from</p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </section>
+              <dl class="dl-compact">
+              </dl>
+              <div class="symbol-detail-labels"><span class="label label-async">async</span></div>
+              <h3 id="top_tracks_country"><span class="symbol-name">top_tracks_country</span><span class="signature"><span class="signature-params">(language, endpoint_country, country_code, limit, offset)</span></span></h3>
+              <p>Most shazamed tracks for a country</p>
+              <section>
+                <h4>Parameters</h4>
+                <table class="jsdoc-details-table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Type</th>
+                      <th>Optional</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <p>language</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>Song language</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>endpoint_country</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>Endpoint country</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>country_code</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>ISO country code for the country</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>limit</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>limit to how many tracks are fetched</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>offset</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>the offset to start fetching from</p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </section>
+              <dl class="dl-compact">
+              </dl>
+              <div class="symbol-detail-labels"><span class="label label-async">async</span></div>
+              <h3 id="top_tracks_global"><span class="symbol-name">top_tracks_global</span><span class="signature"><span class="signature-params">(language, endpoint_country, limit, offset)</span></span></h3>
+              <p>Most shazamed tracks globally</p>
+              <section>
+                <h4>Parameters</h4>
+                <table class="jsdoc-details-table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Type</th>
+                      <th>Optional</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <p>language</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>Song language</p>
+                        <p>Defaults to <code>en-US</code>.</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>endpoint_country</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>Endpoint country</p>
+                        <p>Defaults to <code>GB</code>.</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>limit</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>limit to how many tracks are fetched</p>
+                        <p>Defaults to <code>10</code>.</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>offset</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>the offset to start fetching from</p>
+                        <p>Defaults to <code>0</code>.</p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </section>
+              <dl class="dl-compact">
+              </dl>
+              <div class="symbol-detail-labels"><span class="label label-async">async</span></div>
+              <h3 id="track_info"><span class="symbol-name">track_info</span><span class="signature"><span class="signature-params">(language, endpoint_country, track_id)</span></span></h3>
+              <p>Info about a track</p>
+              <section>
+                <h4>Parameters</h4>
+                <table class="jsdoc-details-table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Type</th>
+                      <th>Optional</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <p>language</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>Song language</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>endpoint_country</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>Endpoint country</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>track_id</p>
+                      </td>
+                      <td>
+                        <p>string</p>
+                      </td>
+                      <td>
+                        <p>&nbsp;</p>
+                      </td>
+                      <td>
+                        <p>Shazam track id</p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </section>
+              <dl class="dl-compact">
+              </dl>
+            </section>
+          </section>
+        </div>
+      </div>
+      <nav id="jsdoc-toc-nav" role="navigation"></nav>
+    </div>
+  </div>
+  <footer id="jsdoc-footer" class="jsdoc-footer">
+    <div id="jsdoc-footer-container">
+      <p>
+        Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc</a> 4.0.2 on April 27, 2024.
+      </p>
+    </div>
+  </footer>
+  <script src="scripts/jquery.min.js"></script>
+  <script src="scripts/tree.jquery.js"></script>
+  <script src="scripts/prettify.js"></script>
+  <script src="scripts/jsdoc-toc.js"></script>
+  <script src="scripts/linenumber.js"></script>
+  <script src="scripts/scrollanchor.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,390 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta name="generator" content="JSDoc 4.0.2">
+  <meta charset="utf-8">
+  <title>node-shazam 1.2.3 &raquo; Source: api.js</title>
+  <link rel="stylesheet" href="https://brick.a.ssl.fastly.net/Karla:400,400i,700,700i" type="text/css">
+  <link rel="stylesheet" href="https://brick.a.ssl.fastly.net/Noto+Serif:400,400i,700,700i" type="text/css">
+  <link rel="stylesheet" href="https://brick.a.ssl.fastly.net/Inconsolata:500" type="text/css">
+  <link href="css/baseline.css" rel="stylesheet">
+</head>
+
+<body onload="prettyPrint()">
+  <nav id="jsdoc-navbar" role="navigation" class="jsdoc-navbar">
+    <div id="jsdoc-navbar-container">
+      <div id="jsdoc-navbar-content">
+        <a href="index.html" class="jsdoc-navbar-package-name">node-shazam 1.<wbr>2.<wbr>3</a>
+      </div>
+    </div>
+  </nav>
+  <div id="jsdoc-body-container">
+    <div id="jsdoc-content">
+      <div id="jsdoc-content-container">
+        <div id="jsdoc-banner" role="banner">
+        </div>
+        <div id="jsdoc-main" role="main">
+          <header class="page-header">
+            <h1>Source: api.js</h1>
+          </header>
+          <article>
+            <pre class="prettyprint linenums"><code>import { SignatureGenerator } from &#x27;./algorithm.js&#x27;;
+import { recognizeBytes } from &#x27;shazamio-core&#x27;;
+import { default as fetch } from &#x27;node-fetch&#x27;;
+import { s16LEToSamplesArray } from &#x27;./utils.js&#x27;;
+import fs from &#x27;fs&#x27;;
+import { readFileSync } from &#x27;fs&#x27;;
+import { Request, ShazamURLS } from &#x27;./requests.js&#x27;;
+import { convertfile, tomp3 } from &#x27;./to_pcm.js&#x27;;
+const TIME_ZONE &#x3D; &#x27;Europe/Paris&#x27;;
+function uuidv4() {
+    return &#x27;xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx&#x27;.replace(/[xy]/g, function (c) {
+        const r &#x3D; Math.random() * 16 | 0, v &#x3D; c &#x3D;&#x3D; &#x27;x&#x27; ? r : (r &amp;amp; 0x3 | 0x8);
+        return v.toString(16);
+    }).toUpperCase();
+}
+export class Endpoint {
+    constructor(timezone) {
+        this.timezone &#x3D; timezone;
+    }
+    url() {
+        return &#x60;${Endpoint.SCHEME}://${Endpoint.HOSTNAME}/discovery/v5/en/US/iphone/-/tag/${uuidv4()}/${uuidv4()}&#x60;;
+    }
+    params() {
+        return {
+            &#x27;sync&#x27;: &#x27;true&#x27;,
+            &#x27;webv3&#x27;: &#x27;true&#x27;,
+            &#x27;sampling&#x27;: &#x27;true&#x27;,
+            &#x27;connected&#x27;: &#x27;&#x27;,
+            &#x27;shazamapiversion&#x27;: &#x27;v3&#x27;,
+            &#x27;sharehub&#x27;: &#x27;true&#x27;,
+            &#x27;hubv5minorversion&#x27;: &#x27;v5.1&#x27;,
+            &#x27;hidelb&#x27;: &#x27;true&#x27;,
+            &#x27;video&#x27;: &#x27;v3&#x27;
+        };
+    }
+    headers(language &#x3D; &#x27;en&#x27;) {
+        return Request.headers(language);
+    }
+    async sendRecognizeRequest(url, body, language &#x3D; &#x27;en&#x27;) {
+        //@ts-ignore
+        return await (await fetch(url, { body, headers: this.headers(language), method: &#x27;POST&#x27; })).json();
+    }
+    async formatAndSendRecognizeRequest(signature, language &#x3D; &#x27;en&#x27;) {
+        const data &#x3D; {
+            &#x27;timezone&#x27;: this.timezone,
+            &#x27;signature&#x27;: {
+                &#x27;uri&#x27;: signature.encodeToUri(),
+                &#x27;samplems&#x27;: Math.round(signature.numberSamples / signature.sampleRateHz * 1000)
+            },
+            &#x27;timestamp&#x27;: new Date().getTime(),
+            &#x27;context&#x27;: {},
+            &#x27;geolocation&#x27;: {}
+        };
+        const url &#x3D; new URL(this.url());
+        Object.entries(this.params()).forEach(([a, b]) &#x3D;&gt; url.searchParams.append(a, b));
+        const response &#x3D; await this.sendRecognizeRequest(url.toString(), JSON.stringify(data), language);
+        if ((response &#x3D;&#x3D;&#x3D; null || response &#x3D;&#x3D;&#x3D; void 0 ? void 0 : response.matches.length) &#x3D;&#x3D;&#x3D; 0)
+            return null;
+        return response;
+    }
+}
+Endpoint.SCHEME &#x3D; &#x27;https&#x27;;
+Endpoint.HOSTNAME &#x3D; &#x27;amp.shazam.com&#x27;;
+/**
+ * @class Shazam
+ */
+export class Shazam {
+    constructor(timeZone) {
+        this.endpoint &#x3D; new Endpoint(timeZone !&#x3D;&#x3D; null &amp;amp;&amp;amp; timeZone !&#x3D;&#x3D; void 0 ? timeZone : TIME_ZONE);
+    }
+    headers(language &#x3D; &#x27;en&#x27;) {
+        return Request.headers(language);
+    }
+    /**
+     * @deprecated
+     * Recognise a song from an audio file
+     * @param {string} path the path to the file
+     * @param {Boolean} minimal false for full track data, true for simplified form
+     * @param {string} language Song language
+     * @returns {ShazamRoot | null}
+     */
+    async fromFilePath(path, minimal &#x3D; false, language &#x3D; &#x27;en&#x27;) {
+        await convertfile(path);
+        const data &#x3D; fs.readFileSync(&#x27;node_shazam_temp.pcm&#x27;);
+        const conv &#x3D; s16LEToSamplesArray(data);
+        fs.unlinkSync(&#x27;node_shazam_temp.pcm&#x27;);
+        const recognise &#x3D; minimal ? await this.recognizeSongMinimal(conv, language) : await this.recognizeSong(conv, language);
+        return recognise;
+    }
+    /**
+     * @deprecated
+     * Recognise a song from a video file
+     * @param {string} path the path to the file
+     * @param {Boolean} minimal false for full track data, true for simplified form
+     * @param {string} language Song language
+     * @returns {ShazamRoot | null}
+     */
+    async fromVideoFile(path, minimal &#x3D; false, language &#x3D; &#x27;en&#x27;) {
+        await tomp3(path);
+        const res &#x3D; await this.fromFilePath(&#x27;node_shazam_temp.mp3&#x27;, minimal, language);
+        fs.unlinkSync(&#x27;node_shazam_temp.mp3&#x27;);
+        return res;
+    }
+    /**
+     * @deprecated
+     * Recognise a song from Samples Array
+     * @param {number[]} samples Samples array
+     * @param {string} language  Song language
+     */
+    async recognizeSong(samples, language &#x3D; &#x27;en&#x27;, callback) {
+        const response &#x3D; await this.fullRecognizeSong(samples, callback, language);
+        if (!response)
+            return null;
+        return response;
+    }
+    /**
+     * @deprecated
+     * Recognise a song from Samples Array and return minial info
+     * @param {number[]} samples Samples array
+     * @param {string} language  Song language
+     */
+    async recognizeSongMinimal(samples, language &#x3D; &#x27;en&#x27;, callback) {
+        var _a, _b;
+        const response &#x3D; await this.fullRecognizeSong(samples, callback, language);
+        if (!response)
+            return null;
+        const trackData &#x3D; response.track, mainSection &#x3D; trackData.sections.find((e) &#x3D;&gt; e.type &#x3D;&#x3D;&#x3D; &#x27;SONG&#x27;);
+        const title &#x3D; trackData.title, artist &#x3D; trackData.subtitle, album &#x3D; (_a &#x3D; mainSection.metadata.find(e &#x3D;&gt; e.title &#x3D;&#x3D;&#x3D; &#x27;Album&#x27;)) &#x3D;&#x3D;&#x3D; null || _a &#x3D;&#x3D;&#x3D; void 0 ? void 0 : _a.text, year &#x3D; (_b &#x3D; mainSection.metadata.find(e &#x3D;&gt; e.title &#x3D;&#x3D;&#x3D; &#x27;Released&#x27;)) &#x3D;&#x3D;&#x3D; null || _b &#x3D;&#x3D;&#x3D; void 0 ? void 0 : _b.text;
+        return { title, artist, album, year };
+    }
+    async fullRecognizeSong(samples, callback, language &#x3D; &#x27;en&#x27;) {
+        callback &#x3D;&#x3D;&#x3D; null || callback &#x3D;&#x3D;&#x3D; void 0 ? void 0 : callback(&#x27;generating&#x27;);
+        const generator &#x3D; this.createSignatureGenerator(samples);
+        while (true) {
+            callback &#x3D;&#x3D;&#x3D; null || callback &#x3D;&#x3D;&#x3D; void 0 ? void 0 : callback(&#x27;generating&#x27;);
+            const signature &#x3D; generator.getNextSignature();
+            if (!signature) {
+                break;
+            }
+            callback &#x3D;&#x3D;&#x3D; null || callback &#x3D;&#x3D;&#x3D; void 0 ? void 0 : callback(&#x27;transmitting&#x27;);
+            const results &#x3D; await this.endpoint.formatAndSendRecognizeRequest(signature, language);
+            if (results !&#x3D;&#x3D; null)
+                return results;
+        }
+        return null;
+    }
+    /**
+     * Recognise a song from a file
+     * @param {string} path the path to the file
+     * @param {string} language Song language
+     * @param {boolean} minimal return minimal info
+     * @returns {ShazamRoot | null}
+     */
+    async recognise(path, language &#x3D; &#x27;en-US&#x27;, minimal &#x3D; false) {
+        var _a, _b;
+        const signatures &#x3D; recognizeBytes(readFileSync(path), 0, Number.MAX_SAFE_INTEGER);
+        let response;
+        for (let i &#x3D; Math.floor(Math.random() * (signatures.length / 2)); i &amp;lt; signatures.length; i +&#x3D; 4) {
+            const data &#x3D; {
+                &#x27;timezone&#x27;: this.endpoint.timezone,
+                &#x27;signature&#x27;: {
+                    &#x27;uri&#x27;: signatures[i].uri,
+                    &#x27;samplems&#x27;: signatures[i].samplems
+                },
+                &#x27;timestamp&#x27;: new Date().getTime(),
+                &#x27;context&#x27;: {},
+                &#x27;geolocation&#x27;: {}
+            };
+            const url &#x3D; new URL(this.endpoint.url());
+            Object.entries(this.endpoint.params()).forEach(([a, b]) &#x3D;&gt; url.searchParams.append(a, b));
+            response &#x3D; await this.endpoint.sendRecognizeRequest(url.toString(), JSON.stringify(data), language);
+            if ((response &#x3D;&#x3D;&#x3D; null || response &#x3D;&#x3D;&#x3D; void 0 ? void 0 : response.matches.length) &#x3D;&#x3D;&#x3D; 0)
+                continue;
+            break;
+        }
+        for (const sig of signatures)
+            sig.free();
+        if (!response)
+            return null;
+        if ((response &#x3D;&#x3D;&#x3D; null || response &#x3D;&#x3D;&#x3D; void 0 ? void 0 : response.matches.length) &#x3D;&#x3D;&#x3D; 0)
+            return null;
+        if (minimal) {
+            const trackData &#x3D; response.track, mainSection &#x3D; trackData.sections.find((e) &#x3D;&gt; e.type &#x3D;&#x3D;&#x3D; &#x27;SONG&#x27;);
+            const title &#x3D; trackData.title, artist &#x3D; trackData.subtitle, album &#x3D; (_a &#x3D; mainSection.metadata.find(e &#x3D;&gt; e.title &#x3D;&#x3D;&#x3D; &#x27;Album&#x27;)) &#x3D;&#x3D;&#x3D; null || _a &#x3D;&#x3D;&#x3D; void 0 ? void 0 : _a.text, year &#x3D; (_b &#x3D; mainSection.metadata.find(e &#x3D;&gt; e.title &#x3D;&#x3D;&#x3D; &#x27;Released&#x27;)) &#x3D;&#x3D;&#x3D; null || _b &#x3D;&#x3D;&#x3D; void 0 ? void 0 : _b.text;
+            return { title, artist, album, year };
+        }
+        return response;
+    }
+    createSignatureGenerator(samples) {
+        const signatureGenerator &#x3D; new SignatureGenerator();
+        signatureGenerator.feedInput(samples);
+        return signatureGenerator;
+    }
+    /**
+     * Most shazamed tracks globally
+     * @param {string} language  Song language
+     * @param {string} endpoint_country Endpoint country
+     * @param {string} limit limit to how many tracks are fetched
+     * @param {string} offset the offset to start fetching from
+     */
+    async top_tracks_global(language &#x3D; &#x27;en-US&#x27;, endpoint_country &#x3D; &#x27;GB&#x27;, limit &#x3D; &#x27;10&#x27;, offset &#x3D; &#x27;0&#x27;) {
+        const url &#x3D; ShazamURLS.top_tracks_global(language, endpoint_country, limit, offset);
+        return await (await fetch(url, { headers: this.headers(language), method: &#x27;GET&#x27; })).json();
+    }
+    /**
+     * Most shazamed tracks for a country
+     * @param {string} language  Song language
+     * @param {string} endpoint_country Endpoint country
+     * @param {string} country_code ISO country code for the country
+     * @param {string} limit limit to how many tracks are fetched
+     * @param {string} offset the offset to start fetching from
+     */
+    async top_tracks_country(language, endpoint_country, country_code, limit, offset) {
+        const url &#x3D; ShazamURLS.top_tracks_country(language, endpoint_country, country_code, limit, offset);
+        return await (await fetch(url, { headers: this.headers(language), method: &#x27;GET&#x27; })).json();
+    }
+    /**
+     * Most shazamed tracks for a city
+     * @param {string} language  Song language
+     * @param {string} endpoint_country Endpoint country
+     * @param {string} city_id Shazam city id
+     * @param {string} limit limit to how many tracks are fetched
+     * @param {string} offset the offset to start fetching from
+     */
+    async top_tracks_city(language, endpoint_country, city_id, limit, offset) {
+        const url &#x3D; ShazamURLS.top_tracks_city(language, endpoint_country, city_id, limit, offset);
+        return await (await fetch(url, { headers: this.headers(language), method: &#x27;GET&#x27; })).json();
+    }
+    /**
+     * Info about a track
+     * @param {string} language  Song language
+     * @param {string} endpoint_country Endpoint country
+     * @param {string} track_id Shazam track id
+     */
+    async track_info(language, endpoint_country, track_id) {
+        const url &#x3D; ShazamURLS.track_info(language, endpoint_country, track_id);
+        return await (await fetch(url, { headers: this.headers(language), method: &#x27;GET&#x27; })).json();
+    }
+    /**
+     * List locations
+     */
+    async list_locations() {
+        const url &#x3D; ShazamURLS.locations();
+        return await (await fetch(url, { headers: this.headers(), method: &#x27;GET&#x27; })).json();
+    }
+    /**
+     * Most shazamed tracks globally for a genre
+     * @param {string} language  Song language
+     * @param {string} endpoint_country Endpoint country
+     * @param {string} genre Genre to search
+     * @param {string} limit limit to how many tracks are fetched
+     * @param {string} offset the offset to start fetching from
+     */
+    async top_genre_tracks_world(language, endpoint_country, genre, limit, offset) {
+        const url &#x3D; ShazamURLS.genre_world(language, endpoint_country, genre, limit, offset);
+        return await (await fetch(url, { headers: this.headers(language), method: &#x27;GET&#x27; })).json();
+    }
+    /**
+     * Most shazamed tracks for a country
+     * @param {string} language  Song language
+     * @param {string} endpoint_country Endpoint country
+     * @param {string} country ISO country code for the country
+     * @param {string} genre Genre to search
+     * @param {string} limit limit to how many tracks are fetched
+     * @param {string} offset the offset to start fetching from
+     */
+    async top_genre_tracks_country(language, endpoint_country, country, genre, limit, offset) {
+        const url &#x3D; ShazamURLS.genre_country(language, endpoint_country, country, genre, limit, offset);
+        return await (await fetch(url, { headers: this.headers(language), method: &#x27;GET&#x27; })).json();
+    }
+    /**
+     * Related songs for a track
+     * @param {string} language  Song language
+     * @param {string} endpoint_country Endpoint country
+     * @param {string} track_id Shazam track id
+     * @param {string} limit limit to how many tracks are fetched
+     * @param {string} offset the offset to start fetching from
+     */
+    async related_songs(language, endpoint_country, track_id, offset, limit) {
+        const url &#x3D; ShazamURLS.related_songs(language, endpoint_country, track_id, offset, limit);
+        return await (await fetch(url, { headers: this.headers(language), method: &#x27;GET&#x27; })).json();
+    }
+    /**
+     * Search artist by name
+     * @param {string} language  Song language
+     * @param {string} endpoint_country Endpoint country
+     * @param {string} query Artist name
+     * @param {string} limit limit to how many tracks are fetched
+     * @param {string} offset the offset to start fetching from
+     */
+    async search_artist(language, endpoint_country, query, limit, offset) {
+        const url &#x3D; ShazamURLS.search_artist(language, endpoint_country, query, limit, offset);
+        return await (await fetch(url, { headers: this.headers(language), method: &#x27;GET&#x27; })).json();
+    }
+    /**
+     * Search artist by id
+     * @param {string} endpoint_country Endpoint country
+     * @param {string} artist_id Artist ID
+     */
+    async search_artist_v2(endpoint_country, artist_id) {
+        const url &#x3D; ShazamURLS.search_artist_v2(endpoint_country, artist_id);
+        return await (await fetch(url, { headers: this.headers(), method: &#x27;GET&#x27; })).json();
+    }
+    /**
+     * Albums by an artist
+     * @param {string} endpoint_country Endpoint country
+     * @param {string} artist_id Shazam artist id
+     * @param {string} limit limit to how many tracks are fetched
+     * @param {string} offset the offset to start fetching from
+     */
+    async artist_albums(endpoint_country, artist_id, limit, offset) {
+        const url &#x3D; ShazamURLS.artist_albums(endpoint_country, artist_id, limit, offset);
+        return await (await fetch(url, { headers: this.headers(), method: &#x27;GET&#x27; })).json();
+    }
+    /**
+     * Search music on shazam
+     * @param {string} language  Song language
+     * @param {string} endpoint_country Endpoint country
+     * @param {string} query Query to search
+     * @param {string} limit limit to how many tracks are fetched
+     * @param {string} offset the offset to start fetching from
+     */
+    async search_music(language, endpoint_country, query, limit, offset) {
+        const url &#x3D; ShazamURLS.search_music(language, endpoint_country, query, limit, offset);
+        return await (await fetch(url, { headers: this.headers(language), method: &#x27;GET&#x27; })).json();
+    }
+    /**
+     * Get number of times a track was shazamed
+     * @param {string} track Track ID
+     */
+    async listen_count(track) {
+        const url &#x3D; ShazamURLS.listening_counter(track);
+        return await (await fetch(url, { headers: this.headers(), method: &#x27;GET&#x27; })).json();
+    }
+}
+Shazam.MAX_TIME_SCEONDS &#x3D; 8;
+</code></pre>
+          </article>
+        </div>
+      </div>
+      <nav id="jsdoc-toc-nav" role="navigation"></nav>
+    </div>
+  </div>
+  <footer id="jsdoc-footer" class="jsdoc-footer">
+    <div id="jsdoc-footer-container">
+      <p>
+        Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc</a> 4.0.2 on April 27, 2024.
+      </p>
+    </div>
+  </footer>
+  <script src="scripts/jquery.min.js"></script>
+  <script src="scripts/tree.jquery.js"></script>
+  <script src="scripts/prettify.js"></script>
+  <script src="scripts/jsdoc-toc.js"></script>
+  <script src="scripts/linenumber.js"></script>
+  <script src="scripts/scrollanchor.js"></script>
+</body>
+
+</html>

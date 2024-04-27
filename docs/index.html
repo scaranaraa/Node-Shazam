@@ -1,0 +1,206 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta name="generator" content="JSDoc 4.0.2">
+  <meta charset="utf-8">
+  <title>node-shazam 1.2.3 &raquo; Home</title>
+  <link rel="stylesheet" href="https://brick.a.ssl.fastly.net/Karla:400,400i,700,700i" type="text/css">
+  <link rel="stylesheet" href="https://brick.a.ssl.fastly.net/Noto+Serif:400,400i,700,700i" type="text/css">
+  <link rel="stylesheet" href="https://brick.a.ssl.fastly.net/Inconsolata:500" type="text/css">
+  <link href="css/baseline.css" rel="stylesheet">
+</head>
+
+<body onload="prettyPrint()">
+  <nav id="jsdoc-navbar" role="navigation" class="jsdoc-navbar">
+    <div id="jsdoc-navbar-container">
+      <div id="jsdoc-navbar-content">
+        <a href="index.html" class="jsdoc-navbar-package-name">node-shazam 1.<wbr>2.<wbr>3</a>
+      </div>
+    </div>
+  </nav>
+  <div id="jsdoc-body-container">
+    <div id="jsdoc-content">
+      <div id="jsdoc-content-container">
+        <div id="jsdoc-banner" role="banner">
+        </div>
+        <div id="jsdoc-main" role="main">
+          <header class="page-header">
+            <h1>
+              node-shazam 1.2.3
+            </h1>
+          </header>
+          <article>
+            <h1>Node-Shazam</h1>
+            <p>A library to interact with the Shazam API</p>
+            <p>This is based on <a href="https://github.com/asivery/node-shazam-api">Node-Shazam-API</a> with most features added from <a href="https://github.com/shazamio/ShazamIO">ShazamIO</a></p>
+            <h2>Installation</h2>
+            <pre class="prettyprint source"><code>npm install node-shazam
+yarn add node-shazam
+</code></pre>
+            <h2>Example usage</h2>
+            <p>Recognise track from file</p>
+            <pre class="prettyprint source lang-js"><code>import {Shazam} from 'node-shazam'
+const shazam = new Shazam()
+
+const recognise = await shazam.recognise('/path/to/file','en-US')
+console.log(recognise)
+
+//fromVideoFile and fromFilePath is deprecated and much slower
+</code></pre>
+            <p>Search track</p>
+            <pre class="prettyprint source lang-js"><code>//works with lyrics and name
+await shazam.search_music('en-US','GB','you know the rules and so do I','1','0')
+</code></pre>
+            <p>Top tracks globally</p>
+            <pre class="prettyprint source lang-js"><code>await shazam.top_tracks_global('en-US','GB','10','0')
+console.log(toptracks)
+</code></pre>
+            <p>Top tracks globally for a genre</p>
+            <pre class="prettyprint source lang-js"><code>await shazam.top_genre_tracks_world('en-US','GB','POP','10','0')
+</code></pre>
+            <p>Top tracks by country</p>
+            <pre class="prettyprint source lang-js"><code>await shazam.top_tracks_country('en-US','GB','GB','10','0')
+</code></pre>
+            <p>Related songs</p>
+            <pre class="prettyprint source lang-js"><code>const trackid = '157666207'
+await shazam.related_songs('en-US','GB',trackid,'10','0')
+</code></pre>
+          </article>
+          <div class="symbol-index">
+            <section>
+              <div class="symbol-index-content">
+                <h2 id="Shazam">Shazam</h2>
+                <div class="symbol-index-section">
+                  <div class="symbol-index-column">
+                    <dl class="symbol-index-list">
+                      <dt class="symbol-index-name">
+                        <a href="Shazam.html" class="!symbol-index-name">Shazam()</a>
+                      </dt>
+                      <dd>
+                      </dd>
+                      <dt class="symbol-index-name">
+                        <a href="Shazam.html#artist_albums" class="!symbol-index-name">Shazam#<wbr>artist_albums(endpoint_country, artist_id, limit, offset)</a>
+                      </dt>
+                      <dd>
+                      </dd>
+                      <dt class="symbol-index-name">
+                        <a href="Shazam.html#fromFilePath" class="!symbol-index-name">Shazam#<wbr>fromFilePath(path, minimal, language)</a>
+                      </dt>
+                      <dd>
+                      </dd>
+                      <dt class="symbol-index-name">
+                        <a href="Shazam.html#fromVideoFile" class="!symbol-index-name">Shazam#<wbr>fromVideoFile(path, minimal, language)</a>
+                      </dt>
+                      <dd>
+                      </dd>
+                      <dt class="symbol-index-name">
+                        <a href="Shazam.html#list_locations" class="!symbol-index-name">Shazam#<wbr>list_locations()</a>
+                      </dt>
+                      <dd>
+                      </dd>
+                      <dt class="symbol-index-name">
+                        <a href="Shazam.html#listen_count" class="!symbol-index-name">Shazam#<wbr>listen_count(track)</a>
+                      </dt>
+                      <dd>
+                      </dd>
+                      <dt class="symbol-index-name">
+                        <a href="Shazam.html#recognise" class="!symbol-index-name">Shazam#<wbr>recognise(path, language, minimal)</a>
+                      </dt>
+                      <dd>
+                      </dd>
+                    </dl>
+                  </div>
+                  <div class="symbol-index-column">
+                    <dl class="symbol-index-list">
+                      <dt class="symbol-index-name">
+                        <a href="Shazam.html#recognizeSong" class="!symbol-index-name">Shazam#<wbr>recognizeSong(samples, language)</a>
+                      </dt>
+                      <dd>
+                      </dd>
+                      <dt class="symbol-index-name">
+                        <a href="Shazam.html#recognizeSongMinimal" class="!symbol-index-name">Shazam#<wbr>recognizeSongMinimal(samples, language)</a>
+                      </dt>
+                      <dd>
+                      </dd>
+                      <dt class="symbol-index-name">
+                        <a href="Shazam.html#related_songs" class="!symbol-index-name">Shazam#<wbr>related_songs(language, endpoint_country, track_id, limit, offset)</a>
+                      </dt>
+                      <dd>
+                      </dd>
+                      <dt class="symbol-index-name">
+                        <a href="Shazam.html#search_artist" class="!symbol-index-name">Shazam#<wbr>search_artist(language, endpoint_country, query, limit, offset)</a>
+                      </dt>
+                      <dd>
+                      </dd>
+                      <dt class="symbol-index-name">
+                        <a href="Shazam.html#search_artist_v2" class="!symbol-index-name">Shazam#<wbr>search_artist_v2(endpoint_country, artist_id)</a>
+                      </dt>
+                      <dd>
+                      </dd>
+                      <dt class="symbol-index-name">
+                        <a href="Shazam.html#search_music" class="!symbol-index-name">Shazam#<wbr>search_music(language, endpoint_country, query, limit, offset)</a>
+                      </dt>
+                      <dd>
+                      </dd>
+                      <dt class="symbol-index-name">
+                        <a href="Shazam.html#top_genre_tracks_country" class="!symbol-index-name">Shazam#<wbr>top_genre_tracks_country(language, endpoint_country, country, genre, limit, offset)</a>
+                      </dt>
+                      <dd>
+                      </dd>
+                    </dl>
+                  </div>
+                  <div class="symbol-index-column">
+                    <dl class="symbol-index-list">
+                      <dt class="symbol-index-name">
+                        <a href="Shazam.html#top_genre_tracks_world" class="!symbol-index-name">Shazam#<wbr>top_genre_tracks_world(language, endpoint_country, genre, limit, offset)</a>
+                      </dt>
+                      <dd>
+                      </dd>
+                      <dt class="symbol-index-name">
+                        <a href="Shazam.html#top_tracks_city" class="!symbol-index-name">Shazam#<wbr>top_tracks_city(language, endpoint_country, city_id, limit, offset)</a>
+                      </dt>
+                      <dd>
+                      </dd>
+                      <dt class="symbol-index-name">
+                        <a href="Shazam.html#top_tracks_country" class="!symbol-index-name">Shazam#<wbr>top_tracks_country(language, endpoint_country, country_code, limit, offset)</a>
+                      </dt>
+                      <dd>
+                      </dd>
+                      <dt class="symbol-index-name">
+                        <a href="Shazam.html#top_tracks_global" class="!symbol-index-name">Shazam#<wbr>top_tracks_global(language, endpoint_country, limit, offset)</a>
+                      </dt>
+                      <dd>
+                      </dd>
+                      <dt class="symbol-index-name">
+                        <a href="Shazam.html#track_info" class="!symbol-index-name">Shazam#<wbr>track_info(language, endpoint_country, track_id)</a>
+                      </dt>
+                      <dd>
+                      </dd>
+                    </dl>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+      <nav id="jsdoc-toc-nav" role="navigation"></nav>
+    </div>
+  </div>
+  <footer id="jsdoc-footer" class="jsdoc-footer">
+    <div id="jsdoc-footer-container">
+      <p>
+        Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc</a> 4.0.2 on April 27, 2024.
+      </p>
+    </div>
+  </footer>
+  <script src="scripts/jquery.min.js"></script>
+  <script src="scripts/tree.jquery.js"></script>
+  <script src="scripts/prettify.js"></script>
+  <script src="scripts/jsdoc-toc.js"></script>
+  <script src="scripts/linenumber.js"></script>
+  <script src="scripts/scrollanchor.js"></script>
+</body>
+
+</html>
