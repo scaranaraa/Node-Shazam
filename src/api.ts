@@ -187,7 +187,7 @@ export class Shazam{
         const signatures = recognizeBytes(readFileSync(path), 0, Number.MAX_SAFE_INTEGER);
         let response;
         
-        for(let i = Math.floor(Math.random() * (signatures.length/2)); i < signatures.length; i += 4){
+        for(let i = Math.floor(signatures.length/2); i < signatures.length; i += 4){
             const data = {
                 'timezone': this.endpoint.timezone,
                 'signature': {
