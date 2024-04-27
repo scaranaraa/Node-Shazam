@@ -182,26 +182,33 @@ export class Shazam{
      */
     async recognise(path: string, language: string = 'en-US', minimal = false){
 
-        const signature = recognizeBytes(readFileSync(path));
-        const data = {
-            'timezone': this.endpoint.timezone,
-            'signature': {
-                'uri': signature[0].uri,
-                'samplems': signature[0].samplems
-            },
-            'timestamp': new Date().getTime(),
-            'context': {},
-            'geolocation': {}
-        };
-        for (const sig of signature) sig.free();
-        const url = new URL(this.endpoint.url());
-        Object.entries(this.endpoint.params()).forEach(([a, b]) => url.searchParams.append(a, b));
+        const signatures = recognizeBytes(readFileSync(path), 0, Number.MAX_SAFE_INTEGER);
+        let response;
+        
+        for(let i = Math.floor(Math.random() * (signatures.length/2)); i < signatures.length; i += 4){
+            const data = {
+                'timezone': this.endpoint.timezone,
+                'signature': {
+                    'uri': signatures[i].uri,
+                    'samplems': signatures[i].samplems
+                },
+                'timestamp': new Date().getTime(),
+                'context': {},
+                'geolocation': {}
+            };
+            const url = new URL(this.endpoint.url());
+            Object.entries(this.endpoint.params()).forEach(([a, b]) => url.searchParams.append(a, b));
+    
+            response = await this.endpoint.sendRecognizeRequest(url.toString(), JSON.stringify(data), language);
+            if(response?.matches.length === 0) continue;
+            break;
+        }
+        
+        for (const sig of signatures) sig.free();
 
-        const response = await this.endpoint.sendRecognizeRequest(url.toString(), JSON.stringify(data), language);
+        if(!response) return null;
         if(response?.matches.length === 0) return null;
-
         if(minimal){
-            if(!response) return null;
             const
                 trackData = response.track,
                 mainSection = trackData.sections.find((e: any) => e.type === 'SONG')!;
