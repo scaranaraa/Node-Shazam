@@ -6,6 +6,7 @@
   "license": "GPL-2.0",
   "type": "module",
   "typings": "dist/api.d.ts",
+  "homepage": "https://scaranaraa.github.io/Node-Shazam/",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/scaranaraa/Node-Shazam.git"

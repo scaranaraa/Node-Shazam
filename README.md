@@ -6,8 +6,9 @@ This is based on [Node-Shazam-API](https://github.com/asivery/node-shazam-api) w
 ## Installation
 ```
 npm install node-shazam
-yarn add node-shazam
 ```
+## Documentation
+Documentation can be found [here](https://scaranaraa.github.io/Node-Shazam/)
 
 ## Example usage
 
