@@ -5,5 +5,7 @@ src/
 .editorconfig
 .yarn
 test.mp3
+.idea/
+.idea
 a.js
 docs/

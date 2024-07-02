@@ -14,7 +14,13 @@ Documentation can be found [here](https://scaranaraa.github.io/Node-Shazam/)
 
 Recognise track from file
 ```js
+
+//ESM
 import {Shazam} from 'node-shazam'
+const shazam = new Shazam()
+
+//CommonJS
+const {Shazam} = require("node-shazam")
 const shazam = new Shazam()
 
 const recognise = await shazam.recognise('/path/to/file','en-US')
