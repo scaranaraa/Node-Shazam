@@ -5,7 +5,6 @@ import { default as fetch } from 'node-fetch';
 import { ShazamRoot } from './types/shazam.js';
 import { s16LEToSamplesArray } from './utils.js';
 import fs from 'fs';
-import { readFileSync } from 'fs';
 import { Request, ShazamURLS } from './requests.js';
 import { convertfile, tomp3 } from './to_pcm.js';
 const TIME_ZONE = 'Europe/Paris';
