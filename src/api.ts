@@ -6,27 +6,27 @@ import { ShazamRoot } from './types/shazam.js';
 import { s16LEToSamplesArray } from './utils.js';
 import fs from 'fs';
 import { readFileSync } from 'fs';
-import { Request,ShazamURLS } from './requests.js';
+import { Request, ShazamURLS } from './requests.js';
 import { convertfile, tomp3 } from './to_pcm.js';
 const TIME_ZONE = 'Europe/Paris';
 
 function uuidv4() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
         const r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
         return v.toString(16);
     }).toUpperCase();
 }
-  
 
-export class Endpoint{
+
+export class Endpoint {
     static SCHEME = 'https';
     static HOSTNAME = 'amp.shazam.com';
 
-    constructor(public timezone: string){}
-    url(){
+    constructor(public timezone: string) { }
+    url() {
         return `${Endpoint.SCHEME}://${Endpoint.HOSTNAME}/discovery/v5/en/US/iphone/-/tag/${uuidv4()}/${uuidv4()}`;
     }
-    params(){
+    params() {
         return {
             'sync': 'true',
             'webv3': 'true',
@@ -39,7 +39,7 @@ export class Endpoint{
             'video': 'v3'
         };
     }
-    headers(language: string = 'en'){
+    headers(language: string = 'en') {
         return Request.headers(language);
     }
 
@@ -49,7 +49,7 @@ export class Endpoint{
         return await (await fetch(url, { body, headers: this.headers(language), method: 'POST' })).json();
     }
 
-    async formatAndSendRecognizeRequest(signature: DecodedMessage, language: string = 'en'): Promise<ShazamRoot | null>{
+    async formatAndSendRecognizeRequest(signature: DecodedMessage, language: string = 'en'): Promise<ShazamRoot | null> {
         const data = {
             'timezone': this.timezone,
             'signature': {
@@ -64,7 +64,7 @@ export class Endpoint{
         Object.entries(this.params()).forEach(([a, b]) => url.searchParams.append(a, b));
 
         const response = await this.sendRecognizeRequest(url.toString(), JSON.stringify(data), language);
-        if(response?.matches.length === 0) return null;
+        if (response?.matches.length === 0) return null;
 
         return response as ShazamRoot;
     }
@@ -72,15 +72,15 @@ export class Endpoint{
 /**
  * @class Shazam
  */
-export class Shazam{
+export class Shazam {
     static MAX_TIME_SCEONDS = 8;
 
     public endpoint: Endpoint;
-    constructor(timeZone?: string){
+    constructor(timeZone?: string) {
         this.endpoint = new Endpoint(timeZone ?? TIME_ZONE);
     }
 
-    headers(language: string = 'en'){
+    headers(language: string = 'en') {
         return Request.headers(language);
     }
 
@@ -92,14 +92,14 @@ export class Shazam{
      * @param {string} language Song language
      * @returns {ShazamRoot | null} 
      */
-    
-    async fromFilePath(path: string, minimal: boolean = false, language: string = 'en'): Promise<ShazamRoot | { title: string; artist: string; album: string | undefined; year: string | undefined; } | null>{
+
+    async fromFilePath(path: string, minimal: boolean = false, language: string = 'en'): Promise<ShazamRoot | { title: string; artist: string; album: string | undefined; year: string | undefined; } | null> {
         await convertfile(path);
         const data = fs.readFileSync('node_shazam_temp.pcm');
-        
+
         const conv = s16LEToSamplesArray(data);
         fs.unlinkSync('node_shazam_temp.pcm');
-        const recognise = minimal ? await this.recognizeSongMinimal(conv,language) : await this.recognizeSong(conv,language);
+        const recognise = minimal ? await this.recognizeSongMinimal(conv, language) : await this.recognizeSong(conv, language);
         return recognise;
 
     }
@@ -112,11 +112,11 @@ export class Shazam{
      * @param {string} language Song language
      * @returns {ShazamRoot | null} 
      */
-    
-    async fromVideoFile(path: string, minimal: boolean = false, language: string = 'en'): Promise<ShazamRoot | { title: string; artist: string; album: string | undefined; year: string | undefined; } | null>{
+
+    async fromVideoFile(path: string, minimal: boolean = false, language: string = 'en'): Promise<ShazamRoot | { title: string; artist: string; album: string | undefined; year: string | undefined; } | null> {
 
         await tomp3(path);
-        const res = await this.fromFilePath('node_shazam_temp.mp3',minimal,language);
+        const res = await this.fromFilePath('node_shazam_temp.mp3', minimal, language);
         fs.unlinkSync('node_shazam_temp.mp3');
         return res;
     }
@@ -128,9 +128,9 @@ export class Shazam{
      * @param {number[]} samples Samples array
      * @param {string} language  Song language
      */
-    async recognizeSong(samples: number[], language: string = 'en', callback?: ((state: 'generating' | 'transmitting') => void)): Promise<ShazamRoot | null>{
+    async recognizeSong(samples: number[], language: string = 'en', callback?: ((state: 'generating' | 'transmitting') => void)): Promise<ShazamRoot | null> {
         const response = await this.fullRecognizeSong(samples, callback, language);
-        if(!response) return null;
+        if (!response) return null;
 
         return response;
 
@@ -143,9 +143,9 @@ export class Shazam{
      * @param {string} language  Song language
      */
 
-    async recognizeSongMinimal(samples: number[], language: string = 'en', callback?: ((state: 'generating' | 'transmitting') => void)){
+    async recognizeSongMinimal(samples: number[], language: string = 'en', callback?: ((state: 'generating' | 'transmitting') => void)) {
         const response = await this.fullRecognizeSong(samples, callback, language);
-        if(!response) return null;
+        if (!response) return null;
 
         const
             trackData = response.track,
@@ -159,35 +159,44 @@ export class Shazam{
 
     }
 
-    async fullRecognizeSong(samples: number[], callback?: ((state: 'generating' | 'transmitting') => void), language: string = 'en'){
+    async fullRecognizeSong(samples: number[], callback?: ((state: 'generating' | 'transmitting') => void), language: string = 'en') {
         callback?.('generating');
         const generator = this.createSignatureGenerator(samples);
-        while(true){
+        while (true) {
             callback?.('generating');
             const signature = generator.getNextSignature();
-            if(!signature){
+            if (!signature) {
                 break;
             }
             callback?.('transmitting');
             const results = await this.endpoint.formatAndSendRecognizeRequest(signature, language);
-            if(results !== null) return results;
+            if (results !== null) return results;
         }
         return null;
     }
 
-    /** 
-     * Recognise a song from a file 
-     * @param {string} path the path to the file
-     * @param {string} language Song language
-     * @param {boolean} minimal return minimal info
+    /**
+     * Recognise a song from a file or buffer
+     * @param {string | Buffer} pathOrBuffer The path to the file or a Buffer containing the file contents
+     * @param {string} language Song language (default: 'en-US')
+     * @param {boolean} minimal Return minimal info (default: false)
      * @returns {ShazamRoot | null} 
      */
-    async recognise(path: string, language: string = 'en-US', minimal = false){
+    async recognise(pathOrBuffer: string | Buffer, language: string = 'en-US', minimal = false) {
 
-        const signatures = recognizeBytes(readFileSync(path), 0, Number.MAX_SAFE_INTEGER);
+        let fileContent: Buffer;
+        if (typeof pathOrBuffer === 'string') {
+            // If pathOrBuffer is a string, assume it's a file path
+            fileContent = fs.readFileSync(pathOrBuffer);
+        } else {
+            // Use the provided buffer
+            fileContent = pathOrBuffer;
+        }
+
+        const signatures = recognizeBytes(fileContent, 0, Number.MAX_SAFE_INTEGER);
         let response;
-        
-        for(let i = Math.floor(signatures.length/2); i < signatures.length; i += 4){
+
+        for (let i = Math.floor(signatures.length / 2); i < signatures.length; i += 4) {
             const data = {
                 'timezone': this.endpoint.timezone,
                 'signature': {
@@ -200,17 +209,17 @@ export class Shazam{
             };
             const url = new URL(this.endpoint.url());
             Object.entries(this.endpoint.params()).forEach(([a, b]) => url.searchParams.append(a, b));
-    
+
             response = await this.endpoint.sendRecognizeRequest(url.toString(), JSON.stringify(data), language);
-            if(response?.matches.length === 0) continue;
+            if (response?.matches.length === 0) continue;
             break;
         }
-        
+
         for (const sig of signatures) sig.free();
 
-        if(!response) return null;
-        if(response?.matches.length === 0) return null;
-        if(minimal){
+        if (!response) return null;
+        if (response?.matches.length === 0) return null;
+        if (minimal) {
             const
                 trackData = response.track,
                 mainSection = trackData.sections.find((e: any) => e.type === 'SONG')!;
@@ -225,7 +234,7 @@ export class Shazam{
         return response;
     }
 
-    createSignatureGenerator(samples: number[]){
+    createSignatureGenerator(samples: number[]) {
         const signatureGenerator = new SignatureGenerator();
         signatureGenerator.feedInput(samples);
         return signatureGenerator;
@@ -239,9 +248,9 @@ export class Shazam{
      * @param {string} offset the offset to start fetching from
      */
 
-    async top_tracks_global(language: string = 'en-US',endpoint_country: string = 'GB',limit: string = '10',offset: string = '0'){
+    async top_tracks_global(language: string = 'en-US', endpoint_country: string = 'GB', limit: string = '10', offset: string = '0') {
 
-        const url = ShazamURLS.top_tracks_global(language,endpoint_country,limit,offset);
+        const url = ShazamURLS.top_tracks_global(language, endpoint_country, limit, offset);
         return await (await fetch(url, { headers: this.headers(language), method: 'GET' })).json();
     }
 
@@ -254,9 +263,9 @@ export class Shazam{
      * @param {string} offset the offset to start fetching from
      */
 
-    async top_tracks_country(language: string,endpoint_country: string,country_code: string,limit: string,offset: string){
+    async top_tracks_country(language: string, endpoint_country: string, country_code: string, limit: string, offset: string) {
 
-        const url = ShazamURLS.top_tracks_country(language,endpoint_country,country_code,limit,offset);
+        const url = ShazamURLS.top_tracks_country(language, endpoint_country, country_code, limit, offset);
         return await (await fetch(url, { headers: this.headers(language), method: 'GET' })).json();
     }
 
@@ -268,9 +277,9 @@ export class Shazam{
      * @param {string} limit limit to how many tracks are fetched
      * @param {string} offset the offset to start fetching from
      */
-    async top_tracks_city(language: string,endpoint_country: string,city_id: string,limit: string,offset: string){
+    async top_tracks_city(language: string, endpoint_country: string, city_id: string, limit: string, offset: string) {
 
-        const url = ShazamURLS.top_tracks_city(language,endpoint_country,city_id,limit,offset);
+        const url = ShazamURLS.top_tracks_city(language, endpoint_country, city_id, limit, offset);
         return await (await fetch(url, { headers: this.headers(language), method: 'GET' })).json();
     }
 
@@ -280,16 +289,16 @@ export class Shazam{
      * @param {string} endpoint_country Endpoint country  
      * @param {string} track_id Shazam track id
      */
-    async track_info(language: string,endpoint_country: string,track_id: string){
+    async track_info(language: string, endpoint_country: string, track_id: string) {
 
-        const url = ShazamURLS.track_info(language,endpoint_country,track_id);
+        const url = ShazamURLS.track_info(language, endpoint_country, track_id);
         return await (await fetch(url, { headers: this.headers(language), method: 'GET' })).json();
     }
 
     /** 
      * List locations
      */
-    async list_locations(){
+    async list_locations() {
         const url = ShazamURLS.locations();
         return await (await fetch(url, { headers: this.headers(), method: 'GET' })).json();
     }
@@ -302,9 +311,9 @@ export class Shazam{
      * @param {string} limit limit to how many tracks are fetched
      * @param {string} offset the offset to start fetching from
      */
-    async top_genre_tracks_world(language: string,endpoint_country: string,genre: string,limit: string,offset: string){
+    async top_genre_tracks_world(language: string, endpoint_country: string, genre: string, limit: string, offset: string) {
 
-        const url = ShazamURLS.genre_world(language,endpoint_country,genre,limit,offset);
+        const url = ShazamURLS.genre_world(language, endpoint_country, genre, limit, offset);
         return await (await fetch(url, { headers: this.headers(language), method: 'GET' })).json();
     }
 
@@ -317,9 +326,9 @@ export class Shazam{
      * @param {string} limit limit to how many tracks are fetched
      * @param {string} offset the offset to start fetching from
      */
-    async top_genre_tracks_country(language: string, endpoint_country: string, country: string, genre: string, limit: string, offset: string){
+    async top_genre_tracks_country(language: string, endpoint_country: string, country: string, genre: string, limit: string, offset: string) {
 
-        const url = ShazamURLS.genre_country(language,endpoint_country,country,genre,limit,offset);
+        const url = ShazamURLS.genre_country(language, endpoint_country, country, genre, limit, offset);
         return await (await fetch(url, { headers: this.headers(language), method: 'GET' })).json();
     }
 
@@ -331,9 +340,9 @@ export class Shazam{
      * @param {string} limit limit to how many tracks are fetched
      * @param {string} offset the offset to start fetching from
      */
-    async related_songs(language: string,endpoint_country: string,track_id: string,offset: string,limit: string){
+    async related_songs(language: string, endpoint_country: string, track_id: string, offset: string, limit: string) {
 
-        const url = ShazamURLS.related_songs(language,endpoint_country,track_id,offset,limit);
+        const url = ShazamURLS.related_songs(language, endpoint_country, track_id, offset, limit);
         return await (await fetch(url, { headers: this.headers(language), method: 'GET' })).json();
     }
 
@@ -345,9 +354,9 @@ export class Shazam{
      * @param {string} limit limit to how many tracks are fetched
      * @param {string} offset the offset to start fetching from
      */
-    async search_artist(language: string,endpoint_country: string,query: string,limit: string,offset: string){
+    async search_artist(language: string, endpoint_country: string, query: string, limit: string, offset: string) {
 
-        const url = ShazamURLS.search_artist(language,endpoint_country,query,limit,offset);
+        const url = ShazamURLS.search_artist(language, endpoint_country, query, limit, offset);
         return await (await fetch(url, { headers: this.headers(language), method: 'GET' })).json();
     }
 
@@ -356,9 +365,9 @@ export class Shazam{
      * @param {string} endpoint_country Endpoint country  
      * @param {string} artist_id Artist ID
      */
-    async search_artist_v2(endpoint_country: string,artist_id: string){
+    async search_artist_v2(endpoint_country: string, artist_id: string) {
 
-        const url = ShazamURLS.search_artist_v2(endpoint_country,artist_id);
+        const url = ShazamURLS.search_artist_v2(endpoint_country, artist_id);
         return await (await fetch(url, { headers: this.headers(), method: 'GET' })).json();
     }
 
@@ -369,9 +378,9 @@ export class Shazam{
      * @param {string} limit limit to how many tracks are fetched
      * @param {string} offset the offset to start fetching from
      */
-    async artist_albums(endpoint_country: string,artist_id: string,limit: string,offset: string){
+    async artist_albums(endpoint_country: string, artist_id: string, limit: string, offset: string) {
 
-        const url = ShazamURLS.artist_albums(endpoint_country,artist_id,limit,offset);
+        const url = ShazamURLS.artist_albums(endpoint_country, artist_id, limit, offset);
         return await (await fetch(url, { headers: this.headers(), method: 'GET' })).json();
     }
 
@@ -383,9 +392,9 @@ export class Shazam{
      * @param {string} limit limit to how many tracks are fetched
      * @param {string} offset the offset to start fetching from
      */
-    async search_music(language: string,endpoint_country: string, query: string,limit: string,offset: string){
+    async search_music(language: string, endpoint_country: string, query: string, limit: string, offset: string) {
 
-        const url = ShazamURLS.search_music(language,endpoint_country,query,limit,offset);
+        const url = ShazamURLS.search_music(language, endpoint_country, query, limit, offset);
         return await (await fetch(url, { headers: this.headers(language), method: 'GET' })).json();
     }
 
@@ -393,11 +402,11 @@ export class Shazam{
      * Get number of times a track was shazamed
      * @param {string} track Track ID
      */
-    
-    async listen_count(track: string){
+
+    async listen_count(track: string) {
 
         const url = ShazamURLS.listening_counter(track);
-        return await (await fetch(url, { headers: this.headers(), method: 'GET' })).json();    
+        return await (await fetch(url, { headers: this.headers(), method: 'GET' })).json();
     }
 
 }
