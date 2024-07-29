@@ -22,8 +22,8 @@ export class Endpoint {
     static HOSTNAME = 'amp.shazam.com';
 
     constructor(public timezone: string) { }
-    url() {
-        return `${Endpoint.SCHEME}://${Endpoint.HOSTNAME}/discovery/v5/en/US/iphone/-/tag/${uuidv4()}/${uuidv4()}`;
+    url(language: string = 'en') {
+        return `${Endpoint.SCHEME}://${Endpoint.HOSTNAME}/discovery/v5/${language}/${language.toUpperCase()}/iphone/-/tag/${uuidv4()}/${uuidv4()}`;
     }
     params() {
         return {
@@ -59,7 +59,7 @@ export class Endpoint {
             'context': {},
             'geolocation': {}
         };
-        const url = new URL(this.url());
+        const url = new URL(this.url(language));
         Object.entries(this.params()).forEach(([a, b]) => url.searchParams.append(a, b));
 
         const response = await this.sendRecognizeRequest(url.toString(), JSON.stringify(data), language);
@@ -177,11 +177,11 @@ export class Shazam {
     /**
      * Recognise a song from a file or buffer
      * @param {string | Buffer} pathOrBuffer The path to the file or a Buffer containing the file contents
-     * @param {string} language Song language (default: 'en-US')
+     * @param {string} language Song language (default: 'en')
      * @param {boolean} minimal Return minimal info (default: false)
      * @returns {ShazamRoot | null} 
      */
-    async recognise(pathOrBuffer: string | Buffer, language: string = 'en-US', minimal = false) {
+    async recognise(pathOrBuffer: string | Buffer, language: string = 'en', minimal = false) {
 
         let fileContent: Buffer;
         if (typeof pathOrBuffer === 'string') {
@@ -206,7 +206,7 @@ export class Shazam {
                 'context': {},
                 'geolocation': {}
             };
-            const url = new URL(this.endpoint.url());
+            const url = new URL(this.endpoint.url(language));
             Object.entries(this.endpoint.params()).forEach(([a, b]) => url.searchParams.append(a, b));
 
             response = await this.endpoint.sendRecognizeRequest(url.toString(), JSON.stringify(data), language);
