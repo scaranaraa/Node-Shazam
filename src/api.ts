@@ -5,6 +5,7 @@ import { default as fetch } from 'node-fetch';
 import { ShazamRoot } from './types/shazam.js';
 import { s16LEToSamplesArray } from './utils.js';
 import fs from 'fs';
+import { readFileSync } from 'fs';
 import { Request, ShazamURLS } from './requests.js';
 import { convertfile, tomp3 } from './to_pcm.js';
 const TIME_ZONE = 'Europe/Paris';
@@ -22,8 +23,8 @@ export class Endpoint {
     static HOSTNAME = 'amp.shazam.com';
 
     constructor(public timezone: string) { }
-    url(language: string = 'en') {
-        return `${Endpoint.SCHEME}://${Endpoint.HOSTNAME}/discovery/v5/${language}/${language.toUpperCase()}/iphone/-/tag/${uuidv4()}/${uuidv4()}`;
+    url() {
+        return `${Endpoint.SCHEME}://${Endpoint.HOSTNAME}/discovery/v5/en/US/iphone/-/tag/${uuidv4()}/${uuidv4()}`;
     }
     params() {
         return {
@@ -59,7 +60,7 @@ export class Endpoint {
             'context': {},
             'geolocation': {}
         };
-        const url = new URL(this.url(language));
+        const url = new URL(this.url());
         Object.entries(this.params()).forEach(([a, b]) => url.searchParams.append(a, b));
 
         const response = await this.sendRecognizeRequest(url.toString(), JSON.stringify(data), language);
@@ -181,18 +182,8 @@ export class Shazam {
      * @param {boolean} minimal Return minimal info (default: false)
      * @returns {ShazamRoot | null} 
      */
-    async recognise(pathOrBuffer: string | Buffer, language: string = 'en', minimal = false) {
-
-        let fileContent: Buffer;
-        if (typeof pathOrBuffer === 'string') {
-            // If pathOrBuffer is a string, assume it's a file path
-            fileContent = fs.readFileSync(pathOrBuffer);
-        } else {
-            // Use the provided buffer
-            fileContent = pathOrBuffer;
-        }
-
-        const signatures = recognizeBytes(fileContent, 0, Number.MAX_SAFE_INTEGER);
+    async recognise(path, language = 'en-US', minimal = false) {
+        const signatures = recognizeBytes(readFileSync(path), 0, Number.MAX_SAFE_INTEGER);
         let response;
 
         for (let i = Math.floor(signatures.length / 2); i < signatures.length; i += 4) {
